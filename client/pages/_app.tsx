@@ -1,12 +1,13 @@
 
 import type { AppProps } from 'next/app'
-import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ScopedCssBaseline>
+    <>
+      <CssBaseline />
       <Component {...pageProps} />
-    </ScopedCssBaseline>
+    </>
   )
 }
 

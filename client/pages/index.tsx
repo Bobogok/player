@@ -1,14 +1,13 @@
-import { Button } from "@mui/material"
-import Navbar from "../components/Navbar"
-
+import { Button } from '@mui/material';
+import Navbar from '../components/Navbar';
+import MainLayout from '../layout/MainLayout';
 
 const Index = () => {
   return (
-    <div>
-      <Navbar />
+    <MainLayout>
       <Button>Кнопка</Button>
-    </div>
-  )
-}
+    </MainLayout>
+  );
+};
 
-export default Index
+export default Index;
