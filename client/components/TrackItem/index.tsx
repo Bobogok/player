@@ -13,14 +13,16 @@ const TrackItem: React.FC<TrackItemProps> = ({ track, active = false }) => {
 
   return (
     <Track onClick={() => router.push('/tracks/' + track._id)}>
-      <IconButton>{active ? <Pause /> : <PlayArrow />}</IconButton>
+      <IconButton onClick={(e) => e.stopPropagation()}>
+        {active ? <Pause /> : <PlayArrow />}
+      </IconButton>
       <img width={70} height={70} src={track.picture} alt="обложка трека" />
       <TrackGrid container direction={'column'}>
         <div>{track.name}</div>
         <Artist>{track.artist}</Artist>
       </TrackGrid>
       {active && <div>02:11 / 03:33</div>}
-      <DeleteIconButton>
+      <DeleteIconButton onClick={(e) => e.stopPropagation()}>
         <Delete />
       </DeleteIconButton>
     </Track>
