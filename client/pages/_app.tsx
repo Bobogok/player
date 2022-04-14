@@ -1,14 +1,14 @@
-
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
+import { wrapper } from '../store';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const WrappedApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <CssBaseline />
       <Component {...pageProps} />
     </>
-  )
-}
+  );
+};
 
-export default MyApp
+export default wrapper.withRedux(WrappedApp);
