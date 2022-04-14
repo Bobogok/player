@@ -1,12 +1,9 @@
 import { Delete, Pause, PlayArrow } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Grid, IconButton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import Track from '../../layout/Track';
 import { TrackItemProps } from './props/TrackItemProps';
-import { Artist } from './style/Artist';
-import { DeleteIconButton } from './style/DeleteIconButton';
-import { TrackGrid } from './style/TrackGrid';
 
 const TrackItem: React.FC<TrackItemProps> = ({ track, active = false }) => {
   const router = useRouter();
@@ -17,14 +14,31 @@ const TrackItem: React.FC<TrackItemProps> = ({ track, active = false }) => {
         {active ? <Pause /> : <PlayArrow />}
       </IconButton>
       <img width={70} height={70} src={track.picture} alt="обложка трека" />
-      <TrackGrid container direction={'column'}>
-        <div>{track.name}</div>
-        <Artist>{track.artist}</Artist>
-      </TrackGrid>
+      <Grid
+        container
+        direction={'column'}
+        sx={{ width: 200, margin: '0 20px' }}
+      >
+        <Typography variant={'h6'}>{track.name}</Typography>
+        <Typography
+          variant={'body1'}
+          sx={{
+            fontSize: 12,
+            color: 'gray',
+          }}
+        >
+          {track.artist}
+        </Typography>
+      </Grid>
       {active && <div>02:11 / 03:33</div>}
-      <DeleteIconButton onClick={(e) => e.stopPropagation()}>
+      <IconButton
+        onClick={(e) => e.stopPropagation()}
+        sx={{
+          marginLeft: 'auto',
+        }}
+      >
         <Delete />
-      </DeleteIconButton>
+      </IconButton>
     </Track>
   );
 };
