@@ -12,7 +12,7 @@ export enum PlayerActionTypes {
   PLAY = 'PLAY',
   PAUSE = 'PAUSE',
   SET_ACTIVE = 'SET_ACTIVE',
-  SET_DURETION = 'SET_DURETION',
+  SET_DURATION = 'SET_DURATION',
   SET_CURRENT_TIME = 'SET_CURRENT_TIME',
   SET_VOLUME = 'SET_VOLUME',
 }
@@ -31,7 +31,7 @@ interface SetActiveAction {
 }
 
 interface SetDurationAction {
-  type: PlayerActionTypes.SET_DURETION;
+  type: PlayerActionTypes.SET_DURATION;
   payload: number;
 }
 

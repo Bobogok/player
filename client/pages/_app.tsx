@@ -10,8 +10,13 @@ import theme from '../src/theme';
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-function WrappedApp(props: any) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+const WrappedApp: React.FC<AppProps> = (props: any) => {
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    store,
+  } = props;
 
   return (
     <CacheProvider value={emotionCache}>
@@ -25,6 +30,6 @@ function WrappedApp(props: any) {
       </ThemeProvider>
     </CacheProvider>
   );
-}
+};
 
 export default wrapper.withRedux(WrappedApp);

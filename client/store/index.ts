@@ -1,4 +1,4 @@
-import { reducer, RootState } from './reducers/index';
+import { reducer, RootState } from './reducers';
 import { createStore, Store } from 'redux';
 import { createWrapper, Context } from 'next-redux-wrapper';
 

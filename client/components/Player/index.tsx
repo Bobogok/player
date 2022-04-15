@@ -1,6 +1,9 @@
 import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
 import { Grid, IconButton, Typography } from '@mui/material';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useActions } from '../../hooks/useAction';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { ITrack } from '../../types/track';
 import TrackProgress from '../TrackProgress';
 import { Playback } from './style/Playback';
@@ -18,12 +21,24 @@ const Player = () => {
     audio:
       'http://localhost:5000/audio/47bff696-f9cc-4387-bc45-4b8e3130cf88.mp3',
   };
-  const active = false;
+
+  const { pause, volume, active, duration, currentTime } = useTypedSelector(
+    (state) => state.player,
+  );
+  const { pauseTrack, playTrack } = useActions();
+
+  const play = () => {
+    if (pause) {
+      playTrack();
+    } else {
+      pauseTrack();
+    }
+  };
 
   return (
     <Playback>
-      <IconButton onClick={(e) => e.stopPropagation()}>
-        {active ? <Pause /> : <PlayArrow />}
+      <IconButton onClick={play}>
+        {!pause ? <Pause /> : <PlayArrow />}
       </IconButton>
       <Grid
         container
