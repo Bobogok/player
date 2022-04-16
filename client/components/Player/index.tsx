@@ -1,12 +1,15 @@
 import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
 import { Grid, IconButton, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { ITrack } from '../../types/track';
 import TrackProgress from '../TrackProgress';
+import VolumeBar from '../VolumeBar';
 import { Playback } from './style/Playback';
+
+let audio: HTMLAudioElement;
 
 const Player = () => {
   const track: ITrack = {
@@ -25,14 +28,51 @@ const Player = () => {
   const { pause, volume, active, duration, currentTime } = useTypedSelector(
     (state) => state.player,
   );
-  const { pauseTrack, playTrack } = useActions();
+  const {
+    pauseTrack,
+    playTrack,
+    setVolume,
+    setCurrentTime,
+    setDuration,
+    setActiveTrack,
+  } = useActions();
+
+  console.log(duration, currentTime);
+
+  useEffect(() => {
+    if (!audio) {
+      audio = new Audio();
+      audio.src = track.audio;
+      audio.volume = volume / 100;
+      audio.onloadedmetadata = () => {
+        setDuration(Math.ceil(audio.duration));
+      };
+      audio.ontimeupdate = () => {
+        setCurrentTime(Math.ceil(audio.currentTime));
+      };
+    }
+  }, []);
 
   const play = () => {
     if (pause) {
       playTrack();
+      audio.play();
     } else {
       pauseTrack();
+      audio.pause();
     }
+  };
+
+  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let volume = +e.target.value;
+    audio.volume = volume / 100;
+    setVolume(volume);
+  };
+
+  const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let duration = +e.target.value;
+    audio.currentTime = duration;
+    setCurrentTime(duration);
   };
 
   return (
@@ -57,16 +97,12 @@ const Player = () => {
         </Typography>
       </Grid>
       <TrackProgress
-        durationTotal={100}
-        durationCurrent={50}
-        onChange={() => ({})}
+        left={currentTime}
+        right={duration}
+        onChange={changeCurrentTime}
       />
       <VolumeUp sx={{ marginLeft: 'auto' }} />
-      <TrackProgress
-        durationTotal={100}
-        durationCurrent={50}
-        onChange={() => ({})}
-      />
+      <VolumeBar volume={volume} onChange={changeVolume} />
     </Playback>
   );
 };

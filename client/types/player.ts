@@ -35,13 +35,13 @@ interface SetDurationAction {
   payload: number;
 }
 
-interface SetVolumeAction {
-  type: PlayerActionTypes.SET_VOLUME;
+interface SetCurrentTimeAction {
+  type: PlayerActionTypes.SET_CURRENT_TIME;
   payload: number;
 }
 
-interface SetCurrentTimeAction {
-  type: PlayerActionTypes.SET_CURRENT_TIME;
+interface SetVolumeAction {
+  type: PlayerActionTypes.SET_VOLUME;
   payload: number;
 }
 

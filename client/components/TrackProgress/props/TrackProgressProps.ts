@@ -1,5 +1,5 @@
 export interface TrackProgressProps {
-  durationTotal: number;
-  durationCurrent: number;
+  left: number;
+  right: number;
   onChange: (e: any) => void;
 }
