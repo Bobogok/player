@@ -1,5 +1,6 @@
 import { Box, Grid } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import TrackItem from '../TrackItem';
 import { TrackListProps } from './props/TrackListProps';
 
@@ -8,7 +9,11 @@ const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
     <Grid container direction={'column'}>
       <Box p={2}>
         {tracks.map((track) => (
-          <TrackItem key={track._id} track={track} />
+          <TrackItem
+            key={track._id}
+            track={track}
+            // isPlay={active?._id === track._id}
+          />
         ))}
       </Box>
     </Grid>

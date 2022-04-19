@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { VolumeBarProps } from './props/VolumeBarProps';
 
-const VolumeBar: React.FC<VolumeBarProps> = ({ volume, onChange }) => {
+const VolumeBar: React.FC<VolumeBarProps> = memo(({ volume, onChange }) => {
+  console.log(volume, onChange);
+
   return (
     <div style={{ display: 'flex' }}>
       <input
@@ -13,6 +15,6 @@ const VolumeBar: React.FC<VolumeBarProps> = ({ volume, onChange }) => {
       />
     </div>
   );
-};
+});
 
 export default VolumeBar;
