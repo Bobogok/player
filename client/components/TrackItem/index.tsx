@@ -39,7 +39,12 @@ const TrackItem: React.FC<TrackItemProps> = memo(({ track, isPlay }) => {
           <PlayArrow />
         </IconButton>
       )}
-      <img width={70} height={70} src={track.picture} alt="обложка трека" />
+      <img
+        width={70}
+        height={70}
+        src={'http://localhost:5000/' + track.picture}
+        alt="обложка трека"
+      />
       <Grid
         container
         direction={'column'}

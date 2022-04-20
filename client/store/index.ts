@@ -1,6 +1,7 @@
 import { reducer, RootState } from './reducers';
-import { applyMiddleware, compose, createStore, Store } from 'redux';
+import { applyMiddleware, compose, createStore, Store, AnyAction } from 'redux';
 import { createWrapper } from 'next-redux-wrapper';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 
 declare global {
   interface Window {
@@ -14,10 +15,12 @@ if (typeof window !== 'undefined') {
 }
 
 const makeStore = (context: any) => {
-  const store = createStore(reducer, composeEnhancers());
+  const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
   return store;
 };
 
 export const wrapper = createWrapper<Store<RootState>>(makeStore, {
   debug: true,
 });
+
+export type NextThunkDispatch = ThunkDispatch<RootState, void, AnyAction>;

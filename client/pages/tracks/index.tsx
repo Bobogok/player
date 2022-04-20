@@ -1,9 +1,13 @@
-import { Box, Button, Card, Grid, styled } from '@mui/material';
+import { Box, Button, Card, Grid, styled, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TrackList from '../../components/TrackList';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import MainLayout from '../../layout/MainLayout';
+import { NextThunkDispatch, wrapper } from '../../store';
+import { fetchTracks, searchTracks } from '../../store/actions-creators/track';
 import { ITrack } from '../../types/track';
+import { useDispatch } from 'react-redux';
 
 const CustomizedCard = styled(Card)`
   width: 900px;
@@ -11,47 +15,48 @@ const CustomizedCard = styled(Card)`
 
 const Index = () => {
   const router = useRouter();
-  const tracks: ITrack[] = [
-    {
-      _id: '625562a5a81c1f39f92f9bfa',
-      name: '1000-7',
-      artist: 'fem.love',
-      text: 'text text text text',
-      listens: 0,
-      comments: [],
-      picture:
-        'http://localhost:5000/image/4721ca47-d1b1-4c76-8cf4-8fa524481e8c.jpg',
-      audio:
-        'http://localhost:5000/audio/47bff696-f9cc-4387-bc45-4b8e3130cf88.mp3',
-    },
-    {
-      _id: '62556426a81c1f39f92f9bff',
-      name: 'скейтер',
-      artist: 'алёна швец',
-      text: 'text text',
-      listens: 0,
-      comments: [],
-      picture:
-        'http://localhost:5000/image/bf13de77-e77d-4fa1-9921-0af2a56f6c69.jpg',
-      audio:
-        'http://localhost:5000/audio/8d2c1f91-333d-4b67-9992-3e1f86507c0e.mp3',
-    },
-    {
-      name: 'быть счастливым',
-      artist: 'хочуспать',
-      text: 'text text',
-      listens: 0,
-      picture:
-        'http://localhost:5000/image/6ca4d43c-b34d-4233-ae21-2385419c691b.jpg',
-      audio:
-        'http://localhost:5000/audio/47a9d8e7-a36a-4136-a8f5-e707840aa9ea.mp3',
-      comments: [],
-      _id: '625564e5a81c1f39f92f9c01',
-    },
-  ];
+  const dispatch = useDispatch() as NextThunkDispatch;
+  const { tracks, error } = useTypedSelector((state) => state.track);
+  const [isLoading, setLoading] = useState<boolean>(!!!tracks.length);
+  const [query, setQuery] = useState<string>('');
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    if (timer) {
+      clearTimeout(timer);
+    }
+    setTimer(
+      setTimeout(async () => {
+        await dispatch(await searchTracks(e.target.value));
+      }, 500),
+    );
+  };
+
+  useEffect(() => {
+    console.log('tracks стработал');
+
+    // if (!tracks.length) {
+    (async () => {
+      await dispatch(await fetchTracks());
+      setLoading(false);
+    })();
+    // }
+  }, []);
+
+  if (error) {
+    return (
+      <MainLayout>
+        <h1>{error}</h1>
+      </MainLayout>
+    );
+  }
+
+  // TODO переделать индикатор загрузки
+  if (isLoading) return <p>Loading...</p>;
 
   return (
-    <MainLayout>
+    <MainLayout title={'Список треков - Музыкальная платформа'}>
       <Grid container justifyContent={'center'}>
         <CustomizedCard>
           <Box p={3}>
@@ -65,6 +70,7 @@ const Index = () => {
               </Button>
             </Grid>
           </Box>
+          <TextField fullWidth value={query} onChange={search} />
           <TrackList tracks={tracks} />
         </CustomizedCard>
       </Grid>
@@ -73,3 +79,12 @@ const Index = () => {
 };
 
 export default Index;
+
+// export const getServerSideProps = wrapper.getServerSideProps((store) =>
+//   // @ts-ignore
+//   async ({ req, res, ...etc }) => {
+//     const dispatch = store.dispatch as NextThunkDispatch;
+//     await dispatch(await fetchTracks());
+//     // dispatch(fetchTracks())
+//   },
+// );

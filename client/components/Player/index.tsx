@@ -26,7 +26,7 @@ const Player = () => {
 
   const setAudio = () => {
     if (active && !currentTime) {
-      audio.src = active.audio;
+      audio.src = 'http://localhost:5000/' + active.audio;
       audio.volume = volume / 100;
       audio.onloadedmetadata = () => {
         setDuration(Math.ceil(audio.duration));
@@ -46,15 +46,6 @@ const Player = () => {
       audio.play();
     }
   };
-
-  // if (audio && pause) {
-  //   console.log('audio && pause');
-
-  //   audio.play();
-  // } else if (audio) {
-  //   console.log('!audio && pause');
-  //   audio && audio.pause();
-  // }
 
   const pauseClick = () => {
     if (!pause) {
@@ -82,6 +73,8 @@ const Player = () => {
   };
 
   useEffect(() => {
+    console.log('сработал');
+
     if (!audio) {
       audio = new Audio();
     } else if (audio && !currentTime) {

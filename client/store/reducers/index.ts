@@ -1,3 +1,4 @@
+import { trackReducer } from './trackReducer';
 import { playerReducer } from './playerReducer';
 import { combineReducers, AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
@@ -5,6 +6,7 @@ import { PlayerState } from '../../types/player';
 
 const rootReducer = combineReducers({
   player: playerReducer,
+  track: trackReducer,
 });
 
 // create your reducer
