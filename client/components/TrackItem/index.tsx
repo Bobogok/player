@@ -10,27 +10,30 @@ import { NextThunkDispatch } from '../../store';
 import { deleteTrack } from '../../store/actions-creators/track';
 import { TrackItemProps } from './props/TrackItemProps';
 
-const TrackItem: React.FC<TrackItemProps> = memo(({ track, isPlay }) => {
+const TrackItem: React.FC<TrackItemProps> = memo(({ track }) => {
   const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
   const { playTrack, pauseTrack, setActiveTrack } = useActions();
-  const { pause, volume, active, duration, currentTime } = useTypedSelector(
-    (state) => state.player,
-  );
+  // const { pause, volume, active, duration, currentTime } = useTypedSelector(
+  //   (state) => state.player,
+  // );
+
+  // console.log(currentTime);
+  console.log('Перерендер');
 
   const play = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    if (track._id === active?._id && !pause) {
-      pauseTrack();
-    } else {
-      playTrack();
-    }
+    // if (track._id === active?._id && !pause) {
+    //   pauseTrack();
+    // } else {
+    //   playTrack();
+    // }
 
-    if (track._id !== active?._id) {
-      setActiveTrack(track);
-      playTrack();
-    }
+    // if (track._id !== active?._id) {
+    setActiveTrack(track);
+    playTrack();
+    // }
   };
 
   const onDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,13 +44,13 @@ const TrackItem: React.FC<TrackItemProps> = memo(({ track, isPlay }) => {
   return (
     <Track
       onClick={() => router.push('/tracks/' + track._id)}
-      current={track._id === active?._id && '2px solid #ff4d6c'}
+      // current={track._id === active?._id && '2px solid #ff4d6c'}
     >
-      {track._id !== active?._id && (
-        <IconButton onClick={play}>
-          <PlayArrow />
-        </IconButton>
-      )}
+      {/* {track._id !== active?._id && ( */}
+      <IconButton onClick={play}>
+        <PlayArrow />
+      </IconButton>
+      {/* )} */}
       <img
         width={70}
         height={70}

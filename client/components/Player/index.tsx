@@ -83,6 +83,10 @@ const Player = () => {
     }
   }, [active]);
 
+  useEffect(() => {
+    setActiveTrack(JSON.parse(localStorage.getItem('activeTrack')!));
+  }, []);
+
   if (!active) {
     return null;
   }

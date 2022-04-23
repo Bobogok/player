@@ -17,7 +17,7 @@ const Index = () => {
   const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
   const { tracks, error } = useTypedSelector((state) => state.track);
-  const [isLoading, setLoading] = useState<boolean>(!!!tracks.length);
+  // const [isLoading, setLoading] = useState<boolean>(!!!tracks.length);
   const [query, setQuery] = useState<string>('');
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -34,15 +34,19 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log('tracks стработал');
-
-    // if (!tracks.length) {
-    (async () => {
-      await dispatch(await fetchTracks());
-      setLoading(false);
-    })();
-    // }
+    localStorage.setItem('activeTrack', JSON.stringify(tracks[0]));
   }, []);
+
+  // useEffect(() => {
+  //   console.log('tracks стработал');
+
+  //   // if (!tracks.length) {
+  //   (async () => {
+  //     await dispatch(await fetchTracks());
+  //     setLoading(false);
+  //   })();
+  //   // }
+  // }, []);
 
   if (error) {
     return (
@@ -53,7 +57,7 @@ const Index = () => {
   }
 
   // TODO переделать индикатор загрузки
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <p>Loading...</p>;
 
   return (
     <MainLayout title={'Список треков - Музыкальная платформа'}>
@@ -80,11 +84,11 @@ const Index = () => {
 
 export default Index;
 
-// export const getServerSideProps = wrapper.getServerSideProps((store) =>
-//   // @ts-ignore
-//   async ({ req, res, ...etc }) => {
-//     const dispatch = store.dispatch as NextThunkDispatch;
-//     await dispatch(await fetchTracks());
-//     // dispatch(fetchTracks())
-//   },
-// );
+export const getServerSideProps = wrapper.getServerSideProps((store) =>
+  // @ts-ignore
+  async ({ req, res, ...etc }) => {
+    const dispatch = store.dispatch as NextThunkDispatch;
+    await dispatch(await fetchTracks());
+    // dispatch(fetchTracks())
+  },
+);
