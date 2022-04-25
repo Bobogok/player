@@ -10,30 +10,30 @@ import { NextThunkDispatch } from '../../store';
 import { deleteTrack } from '../../store/actions-creators/track';
 import { TrackItemProps } from './props/TrackItemProps';
 
-const TrackItem: React.FC<TrackItemProps> = memo(({ track }) => {
+const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
   const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
   const { playTrack, pauseTrack, setActiveTrack } = useActions();
-  // const { pause, volume, active, duration, currentTime } = useTypedSelector(
-  //   (state) => state.player,
-  // );
-
-  // console.log(currentTime);
-  console.log('Перерендер');
+  const { pause, active } = useTypedSelector((state) => state.player);
 
   const play = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    // if (track._id === active?._id && !pause) {
-    //   pauseTrack();
-    // } else {
-    //   playTrack();
-    // }
+    if (!active || localStorage.getItem('currentTrack') !== track._id) {
+      setActiveTrack(track);
+      localStorage.setItem('currentTrack', track._id);
+      playTrack();
+    }
 
-    // if (track._id !== active?._id) {
-    setActiveTrack(track);
-    playTrack();
-    // }
+    if (
+      active &&
+      localStorage.getItem('currentTrack') === active?._id &&
+      !pause
+    ) {
+      pauseTrack();
+    } else {
+      playTrack();
+    }
   };
 
   const onDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,13 +44,19 @@ const TrackItem: React.FC<TrackItemProps> = memo(({ track }) => {
   return (
     <Track
       onClick={() => router.push('/tracks/' + track._id)}
-      // current={track._id === active?._id && '2px solid #ff4d6c'}
+      current={
+        active && track._id === active._id && !pause && '2px solid #ff4d6c'
+      }
     >
-      {/* {track._id !== active?._id && ( */}
-      <IconButton onClick={play}>
-        <PlayArrow />
-      </IconButton>
-      {/* )} */}
+      {active && track._id === active._id && !pause ? (
+        <IconButton onClick={play}>
+          <Pause />
+        </IconButton>
+      ) : (
+        <IconButton onClick={play}>
+          <PlayArrow />
+        </IconButton>
+      )}
       <img
         width={70}
         height={70}
@@ -84,6 +90,6 @@ const TrackItem: React.FC<TrackItemProps> = memo(({ track }) => {
       </IconButton>
     </Track>
   );
-});
+};
 
 export default TrackItem;

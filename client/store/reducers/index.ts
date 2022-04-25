@@ -4,24 +4,27 @@ import { combineReducers, AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { PlayerState } from '../../types/player';
 
-const rootReducer = combineReducers({
+const combinedReducer = combineReducers({
   player: playerReducer,
   track: trackReducer,
 });
 
 // create your reducer
-export const reducer = (state: any, action: AnyAction) => {
-  switch (action.type) {
-    case HYDRATE:
-      const nextState = {
-        ...state, // use previous state
-        ...action.payload, // apply delta from hydration
-      };
-      if (state.count) nextState.count = state.count; // preserve count value on client side navigation
-      return nextState;
-    default:
-      return rootReducer(state, action);
+export const rootReducer = (state: any, action: AnyAction) => {
+  if (action.type === HYDRATE) {
+    const nextState = {
+      ...state, // use previous state
+      ...action.payload, // apply delta from hydration
+    };
+
+    if (action.payload.player.active === null) {
+      nextState.player = state.player;
+    }
+
+    return nextState;
+  } else {
+    return combinedReducer(state, action);
   }
 };
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof combinedReducer>;

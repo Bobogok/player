@@ -8,8 +8,6 @@ import MainLayout from '../../layout/MainLayout';
 import { ITrack } from '../../types/track';
 
 const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
-  console.log(serverTrack);
-
   const [track, setTrack] = useState<ITrack>(serverTrack);
   const router = useRouter();
   const username = useInput('');

@@ -37,6 +37,12 @@ const Player = () => {
     }
   };
 
+  if (audio && pause) {
+    audio.pause();
+  } else if (audio && !pause) {
+    audio.play();
+  }
+
   const play = () => {
     if (pause) {
       pauseTrack();
@@ -73,8 +79,6 @@ const Player = () => {
   };
 
   useEffect(() => {
-    console.log('сработал');
-
     if (!audio) {
       audio = new Audio();
     } else if (audio && !currentTime) {
@@ -83,9 +87,9 @@ const Player = () => {
     }
   }, [active]);
 
-  useEffect(() => {
-    setActiveTrack(JSON.parse(localStorage.getItem('activeTrack')!));
-  }, []);
+  // useEffect(() => {
+  //   setActiveTrack(JSON.parse(localStorage.getItem('activeTrack')!));
+  // }, []);
 
   if (!active) {
     return null;

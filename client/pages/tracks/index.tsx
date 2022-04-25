@@ -17,7 +17,6 @@ const Index = () => {
   const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
   const { tracks, error } = useTypedSelector((state) => state.track);
-  // const [isLoading, setLoading] = useState<boolean>(!!!tracks.length);
   const [query, setQuery] = useState<string>('');
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -32,21 +31,6 @@ const Index = () => {
       }, 500),
     );
   };
-
-  useEffect(() => {
-    localStorage.setItem('activeTrack', JSON.stringify(tracks[0]));
-  }, []);
-
-  // useEffect(() => {
-  //   console.log('tracks стработал');
-
-  //   // if (!tracks.length) {
-  //   (async () => {
-  //     await dispatch(await fetchTracks());
-  //     setLoading(false);
-  //   })();
-  //   // }
-  // }, []);
 
   if (error) {
     return (
@@ -66,12 +50,14 @@ const Index = () => {
           <Box p={3}>
             <Grid container justifyContent={'space-between'}>
               <h1>Список треков</h1>
-              <Button
-                onClick={() => router.push('/tracks/create')}
-                variant="contained"
-              >
-                Загрузить
-              </Button>
+              <Box p={3}>
+                <Button
+                  onClick={() => router.push('/tracks/create')}
+                  variant="contained"
+                >
+                  Загрузить
+                </Button>
+              </Box>
             </Grid>
           </Box>
           <TextField fullWidth value={query} onChange={search} />
@@ -87,8 +73,21 @@ export default Index;
 export const getServerSideProps = wrapper.getServerSideProps((store) =>
   // @ts-ignore
   async ({ req, res, ...etc }) => {
-    const dispatch = store.dispatch as NextThunkDispatch;
-    await dispatch(await fetchTracks());
+    const state = store.getState();
+    console.log('getServerSideProps', state);
+
+    if (state.track.tracks.length === 0) {
+      // await store.dispatch(getWalletDetails(context.params.address));
+      const dispatch = store.dispatch as NextThunkDispatch;
+      await dispatch(await fetchTracks());
+    }
+    // else{
+    //   return{
+    //     props: {
+    //       addressDetails: state.address,
+    //     }
+    //   }
+    // }
     // dispatch(fetchTracks())
   },
 );
