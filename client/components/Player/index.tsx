@@ -1,13 +1,10 @@
 import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
-import { Grid, IconButton, Typography } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { Grid, Typography } from '@mui/material';
+import React, { useCallback, useEffect } from 'react';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { ITrack } from '../../types/track';
-import TrackProgress from '../TrackProgress';
 import VolumeBar from '../VolumeBar';
-import { Playback } from './style/Playback';
+import { Container, Playbar, PlayButton, ProgressBar } from './style';
 
 let audio: HTMLAudioElement;
 
@@ -87,24 +84,36 @@ const Player = () => {
     }
   }, [active]);
 
-  // useEffect(() => {
-  //   setActiveTrack(JSON.parse(localStorage.getItem('activeTrack')!));
-  // }, []);
-
   if (!active) {
     return null;
   }
 
+  const secondsToTime = (time: number) => {
+    let minutes = Math.floor(time / 60)
+      .toString()
+      .padStart(2, '0');
+    let seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, '0');
+
+    return `${minutes}:${seconds}`;
+  };
+
   return (
-    <Playback>
-      <IconButton
-        onClick={() => {
-          pauseClick();
-          // setPauseButtonAction(!pauseButton);
-        }}
-      >
+    <Container>
+      <ProgressBar currentTime={currentTime} />
+      <Playbar>
+        {/* <TrackProgress
+          left={currentTime}
+          right={duration}
+          onChange={changeCurrentTime}
+        /> */}
+        <div>{secondsToTime(currentTime)}</div>
+        <div>{secondsToTime(duration)}</div>
+      </Playbar>
+      <PlayButton onClick={pauseClick}>
         {!pause ? <Pause /> : <PlayArrow />}
-      </IconButton>
+      </PlayButton>
       <Grid
         container
         direction={'column'}
@@ -121,14 +130,9 @@ const Player = () => {
           {active?.artist}
         </Typography>
       </Grid>
-      <TrackProgress
-        left={currentTime}
-        right={duration}
-        onChange={changeCurrentTime}
-      />
       <VolumeUp sx={{ marginLeft: 'auto' }} />
       <VolumeBar volume={volume} onChange={changeVolume} />
-    </Playback>
+    </Container>
   );
 };
 
