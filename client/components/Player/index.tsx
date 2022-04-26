@@ -2,6 +2,7 @@ import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 import { useActions } from '../../hooks/useAction';
+import { useConvertSeconds } from '../../hooks/useConvertSeconds';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import VolumeBar from '../VolumeBar';
 import { Container, Playbar, PlayButton, ProgressBar } from './style';
@@ -69,10 +70,12 @@ const Player = () => {
     [volume],
   );
 
-  const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let duration = +e.target.value;
-    audio.currentTime = duration;
-    setCurrentTime(duration);
+  const changeCurrentTime = (e: MouseEvent) => {
+    const target = e.target as HTMLTextAreaElement;
+    let time = duration * (e.clientX / target.clientWidth);
+
+    audio.currentTime = time;
+    setCurrentTime(time);
   };
 
   useEffect(() => {
@@ -88,28 +91,18 @@ const Player = () => {
     return null;
   }
 
-  const secondsToTime = (time: number) => {
-    let minutes = Math.floor(time / 60)
-      .toString()
-      .padStart(2, '0');
-    let seconds = Math.floor(time % 60)
-      .toString()
-      .padStart(2, '0');
-
-    return `${minutes}:${seconds}`;
-  };
-
   return (
     <Container>
-      <ProgressBar currentTime={currentTime} />
-      <Playbar>
-        {/* <TrackProgress
-          left={currentTime}
-          right={duration}
-          onChange={changeCurrentTime}
-        /> */}
-        <div>{secondsToTime(currentTime)}</div>
-        <div>{secondsToTime(duration)}</div>
+      {/* <ProgressBar currentTime={currentTime / duration} /> */}
+      <ProgressBar currentTime={audio?.currentTime / duration} />
+      <Playbar onClick={changeCurrentTime}>
+        {/* убрать инлайн стили */}
+        <div style={{ userSelect: 'none', pointerEvents: 'none' }}>
+          {useConvertSeconds(currentTime)}
+        </div>
+        <div style={{ userSelect: 'none', pointerEvents: 'none' }}>
+          {useConvertSeconds(duration)}
+        </div>
       </Playbar>
       <PlayButton onClick={pauseClick}>
         {!pause ? <Pause /> : <PlayArrow />}

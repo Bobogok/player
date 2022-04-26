@@ -11,10 +11,10 @@ const ProgressBar = styled.div<{ currentTime: number }>(
     width: '100%',
     background: '#1976d2',
     transformOrigin: 0,
-    transition: 'all 1s linear 0s',
+    transition: 'transform .2s linear 0s',
   },
   ({ currentTime }) => ({
-    transform: `scaleX(${currentTime / 100})`,
+    transform: `scaleX(${currentTime})`,
   }),
 );
 
