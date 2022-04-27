@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const Container = styled('div')({
-  minHeight: 60,
+  background: 'white',
+  minHeight: 65,
   display: 'flex',
   alignItems: 'center',
   position: 'fixed',

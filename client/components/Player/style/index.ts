@@ -2,3 +2,8 @@ export { default as Container } from './Container';
 export { default as PlayButton } from './PlayButton';
 export { default as Playbar } from './Playbar';
 export { default as ProgressBar } from './ProgressBar';
+export { default as ProgressText } from './ProgressText';
+export { default as Tooltip } from './Tooltip';
+export { default as PrevueTrack } from './PrevueTrack';
+export { default as Typography } from './Typography';
+export { default as Wrapper } from './Wrapper';

@@ -1,11 +1,29 @@
-import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
-import { Grid, Typography } from '@mui/material';
-import React, { useCallback, useEffect } from 'react';
+// import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShareIcon from '@mui/icons-material/Share';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import PlayIcon from '@mui/icons-material/PlayCircleFilledOutlined';
+import PauseIcon from '@mui/icons-material/PauseCircleOutlineOutlined';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useActions } from '../../hooks/useAction';
-import { useConvertSeconds } from '../../hooks/useConvertSeconds';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { convertToSeconds, trottlingEvents } from '../../src/helpers';
 import VolumeBar from '../VolumeBar';
-import { Container, Playbar, PlayButton, ProgressBar } from './style';
+import {
+  Container,
+  Playbar,
+  PlayButton,
+  PrevueTrack,
+  ProgressBar,
+  ProgressText,
+  Tooltip,
+  Typography,
+  Wrapper,
+} from './style';
 
 let audio: HTMLAudioElement;
 
@@ -34,6 +52,10 @@ const Player = () => {
       };
     }
   };
+  const [tooltip, setToolTip] = useState<{ position: number; time: string }>({
+    position: 0,
+    time: '00:00',
+  });
 
   if (audio && pause) {
     audio.pause();
@@ -70,10 +92,11 @@ const Player = () => {
     [volume],
   );
 
-  const changeCurrentTime = (e: MouseEvent) => {
+  const changeCurrentTime = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     const target = e.target as HTMLTextAreaElement;
     let time = duration * (e.clientX / target.clientWidth);
-
     audio.currentTime = time;
     setCurrentTime(time);
   };
@@ -91,40 +114,78 @@ const Player = () => {
     return null;
   }
 
+  const changeTooltip = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = e.target as HTMLTextAreaElement;
+    trottlingEvents(
+      () =>
+        setToolTip({
+          position: e.clientX,
+          time: convertToSeconds(duration * (e.clientX / target.clientWidth)),
+        }),
+      15,
+      e.type,
+    );
+  };
+
   return (
     <Container>
-      {/* <ProgressBar currentTime={currentTime / duration} /> */}
-      <ProgressBar currentTime={audio?.currentTime / duration} />
-      <Playbar onClick={changeCurrentTime}>
-        {/* убрать инлайн стили */}
-        <div style={{ userSelect: 'none', pointerEvents: 'none' }}>
-          {useConvertSeconds(currentTime)}
-        </div>
-        <div style={{ userSelect: 'none', pointerEvents: 'none' }}>
-          {useConvertSeconds(duration)}
-        </div>
+      {/* ProgressBar */}
+      <ProgressBar
+        style={{ transform: `scaleX(${audio?.currentTime / duration})` }}
+      />
+      <Playbar onClick={changeCurrentTime} onMouseMove={changeTooltip}>
+        <Tooltip style={{ left: `${tooltip.position! - 30}px` }}>
+          {tooltip.time}
+        </Tooltip>
+        <ProgressText>{convertToSeconds(currentTime)}</ProgressText>
+        <ProgressText>{convertToSeconds(duration)}</ProgressText>
       </Playbar>
-      <PlayButton onClick={pauseClick}>
-        {!pause ? <Pause /> : <PlayArrow />}
-      </PlayButton>
-      <Grid
-        container
-        direction={'column'}
-        sx={{ width: 200, margin: '0 20px' }}
-      >
-        <Typography variant={'h6'}>{active?.name}</Typography>
-        <Typography
-          variant={'body1'}
-          sx={{
-            fontSize: 12,
-            color: 'gray',
-          }}
+
+      {/* PrevueTrack */}
+      <Wrapper flex={'0 0 250px'}>
+        <PrevueTrack>
+          <img
+            width={50}
+            height={50}
+            src={'http://localhost:5000/' + active.picture}
+            alt="Обложка трека"
+          />
+        </PrevueTrack>
+        <Wrapper
+          column
+          alignItems={'flex-start'}
+          margin={'0 20px 0 0'}
+          flex={'1 0 auto'}
         >
-          {active?.artist}
-        </Typography>
-      </Grid>
-      <VolumeUp sx={{ marginLeft: 'auto' }} />
-      <VolumeBar volume={volume} onChange={changeVolume} />
+          <Typography variant={'main'}>{active?.name}</Typography>
+          <Typography variant={'text'}>{active?.artist}</Typography>
+        </Wrapper>
+        <Wrapper setMargins>
+          <FavoriteBorderIcon />
+          <ShareIcon />
+          <FileDownloadOutlinedIcon />
+        </Wrapper>
+      </Wrapper>
+
+      {/* Controls */}
+      <Wrapper flex={'1 0 auto'} setMargins={'20px'} justify={'center'}>
+        <ShuffleIcon sx={{ fontSize: 20 }} />
+        <SkipPreviousIcon sx={{ fontSize: 25 }} />
+        <PlayButton onClick={pauseClick}>
+          {!pause ? (
+            <PauseIcon sx={{ fontSize: 40, color: '#1976d2' }} />
+          ) : (
+            <PlayIcon sx={{ fontSize: 40, color: '#1976d2' }} />
+          )}
+        </PlayButton>
+        <SkipNextIcon sx={{ fontSize: 25 }} />
+        <RepeatIcon sx={{ fontSize: 20 }} />
+      </Wrapper>
+
+      {/* volume */}
+      <Wrapper flex={'0 1 250px'} justify={'flex-end'}>
+        <VolumeBar volume={volume} onChange={changeVolume} />
+      </Wrapper>
     </Container>
   );
 };
