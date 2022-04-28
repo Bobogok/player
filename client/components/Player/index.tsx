@@ -171,11 +171,7 @@ const Player = () => {
         <ShuffleIcon sx={{ fontSize: 20 }} />
         <SkipPreviousIcon sx={{ fontSize: 25 }} />
         <PlayButton onClick={pauseClick}>
-          {!pause ? (
-            <PauseIcon sx={{ fontSize: 40, color: '#1976d2' }} />
-          ) : (
-            <PlayIcon sx={{ fontSize: 40, color: '#1976d2' }} />
-          )}
+          {!pause ? <PauseIcon /> : <PlayIcon />}
         </PlayButton>
         <SkipNextIcon sx={{ fontSize: 25 }} />
         <RepeatIcon sx={{ fontSize: 20 }} />

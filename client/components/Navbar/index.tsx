@@ -1,22 +1,20 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { useRouter } from 'next/router';
-import { AppBar } from './style/AppBar';
-import { DrawerHeader } from './style/DrawerHeader';
+import MuiSearchIcon from '@mui/icons-material/Search';
+import FileUpload from '@mui/icons-material/FileUploadOutlined';
+import Notifications from '@mui/icons-material/NotificationsNoneOutlined';
+import {
+  Avatar,
+  Burger,
+  Container,
+  Logo,
+  LogoWrapper,
+  ProfileIcon,
+  ProfileWrapper,
+  SearchField,
+  SearchIcon,
+  SearchWrapper,
+} from './style';
 
 const drawerWidth = 240;
 
@@ -27,71 +25,48 @@ const menuItems = [
 ];
 
 function Navbar() {
-  // const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const router = useRouter();
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" open={open} drawerWidth={drawerWidth}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Player
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {/* {theme.direction === 'ltr' ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )} */}
-          </IconButton>
-        </DrawerHeader>
-        <List>
-          {menuItems.map(({ text, href }, index) => (
-            <ListItem button key={href} onClick={() => router.push(href)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-    </Box>
+    <Container>
+      {/* Logo */}
+      <LogoWrapper>
+        <Burger>
+          <MenuIcon />
+        </Burger>
+        <Logo>Soundbar</Logo>
+      </LogoWrapper>
+
+      {/* Search */}
+      <SearchWrapper>
+        <SearchField type="text" placeholder="Найти трек..." />
+        <SearchIcon>
+          <MuiSearchIcon />
+        </SearchIcon>
+      </SearchWrapper>
+
+      {/* Profile */}
+      <ProfileWrapper>
+        <ProfileIcon>
+          <FileUpload />
+        </ProfileIcon>
+        <ProfileIcon>
+          <Notifications />
+        </ProfileIcon>
+        <Avatar />
+      </ProfileWrapper>
+    </Container>
   );
+
+  // // const theme = useTheme();
+  // const [open, setOpen] = React.useState(false);
+  // const router = useRouter();
+
+  // const handleDrawerOpen = () => {
+  //   setOpen(true);
+  // };
+
+  // const handleDrawerClose = () => {
+  //   setOpen(false);
+  // };
 }
 
 export default Navbar;

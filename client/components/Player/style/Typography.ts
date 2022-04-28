@@ -32,7 +32,7 @@ const Typography = styled.a<ITypography>`
   }}
 
   &:hover {
-    color: #1976d2;
+    color: ${(props) => props.theme.main};
   }
 `;
 

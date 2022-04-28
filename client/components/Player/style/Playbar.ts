@@ -10,7 +10,8 @@ const Playbar = styled.div`
   left: 0;
   bottom: 65px;
   height: 16px;
-  background-color: #1976d21f;
+  opacity: 0.3;
+  background-color: ${(props) => props.theme.main};
 `;
 
 export default Playbar;

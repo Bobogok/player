@@ -1,5 +1,4 @@
 import { Button } from '@mui/material';
-import Navbar from '../components/Navbar';
 import MainLayout from '../layout/MainLayout';
 
 const Index = () => {
