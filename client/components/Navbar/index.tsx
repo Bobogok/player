@@ -27,7 +27,7 @@ const menuItems = [
 ];
 
 function Navbar() {
-  const theme = useTheme();
+  // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
 
@@ -72,11 +72,11 @@ function Navbar() {
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? (
+            {/* {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
               <ChevronRightIcon />
-            )}
+            )} */}
           </IconButton>
         </DrawerHeader>
         <List>

@@ -24,7 +24,7 @@ const Tooltip = styled.div`
     height: 15px;
     position: absolute;
     bottom: -5px;
-    left: calc((15 / 2) + 60) px;
+    left: calc((15px / 2) + 60);
     background: #1976d2;
     transform: rotate(45deg);
     z-index: -1;
@@ -32,6 +32,10 @@ const Tooltip = styled.div`
 
   ${Playbar}:hover & {
     opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 

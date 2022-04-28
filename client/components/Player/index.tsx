@@ -1,4 +1,3 @@
-// import { Pause, PlayArrow, VolumeUp } from '@mui/icons-material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
@@ -14,15 +13,19 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { convertToSeconds, trottlingEvents } from '../../src/helpers';
 import VolumeBar from '../VolumeBar';
 import {
+  Album,
   Container,
+  Controls,
+  Icons,
   Playbar,
   PlayButton,
   PrevueTrack,
   ProgressBar,
   ProgressText,
+  TextWrapper,
   Tooltip,
   Typography,
-  Wrapper,
+  Volume,
 } from './style';
 
 let audio: HTMLAudioElement;
@@ -142,7 +145,7 @@ const Player = () => {
       </Playbar>
 
       {/* PrevueTrack */}
-      <Wrapper flex={'0 0 250px'}>
+      <Album>
         <PrevueTrack>
           <img
             width={50}
@@ -151,24 +154,20 @@ const Player = () => {
             alt="Обложка трека"
           />
         </PrevueTrack>
-        <Wrapper
-          column
-          alignItems={'flex-start'}
-          margin={'0 20px 0 0'}
-          flex={'1 0 auto'}
-        >
+        <TextWrapper>
           <Typography variant={'main'}>{active?.name}</Typography>
           <Typography variant={'text'}>{active?.artist}</Typography>
-        </Wrapper>
-        <Wrapper setMargins>
+        </TextWrapper>
+
+        <Icons>
           <FavoriteBorderIcon />
           <ShareIcon />
           <FileDownloadOutlinedIcon />
-        </Wrapper>
-      </Wrapper>
+        </Icons>
+      </Album>
 
       {/* Controls */}
-      <Wrapper flex={'1 0 auto'} setMargins={'20px'} justify={'center'}>
+      <Controls>
         <ShuffleIcon sx={{ fontSize: 20 }} />
         <SkipPreviousIcon sx={{ fontSize: 25 }} />
         <PlayButton onClick={pauseClick}>
@@ -180,12 +179,12 @@ const Player = () => {
         </PlayButton>
         <SkipNextIcon sx={{ fontSize: 25 }} />
         <RepeatIcon sx={{ fontSize: 20 }} />
-      </Wrapper>
+      </Controls>
 
       {/* volume */}
-      <Wrapper flex={'0 1 250px'} justify={'flex-end'}>
+      <Volume>
         <VolumeBar volume={volume} onChange={changeVolume} />
-      </Wrapper>
+      </Volume>
     </Container>
   );
 };

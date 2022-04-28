@@ -5,6 +5,9 @@ interface ITypography {
 }
 
 const Typography = styled.a<ITypography>`
+  max-width: 120px;
+  text-overflow: ellipsis;
+  overflow: hidden;
   line-height: 1.5;
   cursor: pointer;
 
