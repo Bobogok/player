@@ -1,4 +1,3 @@
-import * as React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiSearchIcon from '@mui/icons-material/Search';
 import FileUpload from '@mui/icons-material/FileUploadOutlined';
@@ -15,21 +14,22 @@ import {
   SearchIcon,
   SearchWrapper,
 } from './style';
+import { useState } from 'react';
+import Sidebar from '../Sidebar';
 
-const drawerWidth = 240;
+const Navbar = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  // console.log('перерендер Navbar');
+  // console.log(sidebarOpen);
 
-const menuItems = [
-  { text: 'Главная', href: '/' },
-  { text: 'Список треков', href: '/tracks' },
-  { text: 'Список альбомов', href: '/albums' },
-];
-
-function Navbar() {
   return (
     <Container>
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
+
       {/* Logo */}
       <LogoWrapper>
-        <Burger>
+        <Burger onClick={() => setSidebarOpen(true)}>
           <MenuIcon />
         </Burger>
         <Logo>Soundbar</Logo>
@@ -55,18 +55,6 @@ function Navbar() {
       </ProfileWrapper>
     </Container>
   );
-
-  // // const theme = useTheme();
-  // const [open, setOpen] = React.useState(false);
-  // const router = useRouter();
-
-  // const handleDrawerOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleDrawerClose = () => {
-  //   setOpen(false);
-  // };
-}
+};
 
 export default Navbar;
