@@ -20,10 +20,12 @@ import { useDispatch } from 'react-redux';
 import { NextThunkDispatch } from '../../store';
 import { searchTracks } from '../../store/actions-creators/track';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>('');
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -69,7 +71,7 @@ const Navbar = () => {
 
       {/* Profile */}
       <ProfileWrapper>
-        <ProfileIcon>
+        <ProfileIcon onClick={() => router.push('/tracks/create')}>
           <FileUpload />
         </ProfileIcon>
         <ProfileIcon>

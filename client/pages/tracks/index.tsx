@@ -1,18 +1,16 @@
-import { Box, Button, Card, Grid, styled, TextField } from '@mui/material';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Box, Button, Card, Grid, styled } from '@mui/material';
 import TrackList from '../../components/TrackList';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import MainLayout from '../../layout/MainLayout';
 import { NextThunkDispatch, wrapper } from '../../store';
-import { fetchTracks, searchTracks } from '../../store/actions-creators/track';
+import { fetchTracks } from '../../store/actions-creators/track';
 
 const CustomizedCard = styled(Card)`
   width: 900px;
 `;
 
 const Index = () => {
-  const router = useRouter();
   const { tracks, error } = useTypedSelector((state) => state.track);
 
   if (error) {
@@ -33,14 +31,6 @@ const Index = () => {
           <Box p={3}>
             <Grid container justifyContent={'space-between'}>
               <h1>Список треков</h1>
-              <Box p={3}>
-                <Button
-                  onClick={() => router.push('/tracks/create')}
-                  variant="contained"
-                >
-                  Загрузить
-                </Button>
-              </Box>
             </Grid>
           </Box>
           <TrackList tracks={tracks} />
