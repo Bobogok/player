@@ -1,14 +1,14 @@
+import React from 'react';
 import { Delete, Pause, PlayArrow } from '@mui/icons-material';
 import { Grid, IconButton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import Track from '../../layout/Track';
 import { NextThunkDispatch } from '../../store';
 import { deleteTrack } from '../../store/actions-creators/track';
 import { TrackItemProps } from './props/TrackItemProps';
+import { STrack } from './style';
 
 const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
   const router = useRouter();
@@ -42,11 +42,9 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
   };
 
   return (
-    <Track
+    <STrack
       onClick={() => router.push('/tracks/' + track._id)}
-      current={
-        active && track._id === active._id && !pause && '2px solid #ff4d6c'
-      }
+      current={!!active && track._id === active._id}
     >
       {active && track._id === active._id && !pause ? (
         <IconButton onClick={play}>
@@ -88,7 +86,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
       >
         <Delete />
       </IconButton>
-    </Track>
+    </STrack>
   );
 };
 

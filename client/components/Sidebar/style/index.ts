@@ -19,7 +19,6 @@ const scrimOut = keyframes`
   }
 
   to {
-    display: none;
     opacity: 0;
     transform: translateZ(0);
   }
@@ -36,29 +35,32 @@ const slide = keyframes`
 `;
 
 const slideOut = keyframes`
-  from {
+from {
     transform: translate3d(0, 0, 0);
   }
 
   to {
+    visibility: hidden;
     transform: translate3d(-100%, 0, 0);
   }
 `;
 
-export const SSidebar = styled.div<{ isOpen: boolean; close: boolean }>`
-  // 💩💩💩
-  ${({ close, isOpen }) => {
-    if (!isOpen && close) {
+export const SSidebar = styled.div<{ isOpen: boolean; isMounted: boolean }>`
+  ${({ isOpen, isMounted }) => {
+    if (!isOpen && !isMounted) {
       return css`
+        visibility: hidden;
         transform: translate3d(-100%, 0, 0);
       `;
-    } else if ((isOpen && !close) || (isOpen && close)) {
+    } else if (isOpen && isMounted) {
       return css`
+        visibility: visible;
         transform: translate3d(0, 0, 0);
         animation: ${slide} 0.2s ease-out;
       `;
-    } else if (!isOpen && !close) {
+    } else if (!isOpen && isMounted) {
       return css`
+        visibility: hidden;
         transform: translate3d(-100%, 0, 0);
         animation: ${slideOut} 0.2s ease-out;
       `;
@@ -123,7 +125,7 @@ export const SScrim = styled.div<{ isOpen: boolean }>`
       : css`
           ${scrimOut} 0.2s ease-out
         `};
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;

@@ -56,7 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) =>
   // @ts-ignore
   async ({ req, res, ...etc }) => {
     const state = store.getState();
-    console.log('getServerSideProps', state);
+    // console.log('getServerSideProps', state);
 
     if (state.track.tracks.length === 0) {
       // await store.dispatch(getWalletDetails(context.params.address));

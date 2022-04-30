@@ -1,15 +1,9 @@
 import Head from 'next/head';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Navbar from '../../components/Navbar';
 import Player from '../../components/Player';
-import { CustomizedContainer } from './styles';
-
-interface MainLayoutProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  children?: ReactNode;
-}
+import MainLayoutProps from './props/MainLayoutProps';
+import { SContainer, SWrapper } from './style';
 
 // rafce
 const MainLayout: React.FC<MainLayoutProps> = ({
@@ -36,9 +30,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Navbar />
-      <CustomizedContainer>{children}</CustomizedContainer>
-      <Player />
+      <SWrapper>
+        <Navbar />
+        <SContainer>{children}</SContainer>
+        <Player />
+      </SWrapper>
     </>
   );
 };

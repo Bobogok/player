@@ -26,8 +26,6 @@ const Navbar = () => {
   const dispatch = useDispatch() as NextThunkDispatch;
   const [query, setQuery] = useState<string>('');
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-  // console.log('перерендер Navbar');
-  // console.log(sidebarOpen);
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);

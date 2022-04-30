@@ -22,6 +22,7 @@ import {
   SIcon,
   SEndpoint,
 } from './style';
+import useIsMounted from '../../hooks/useIsMounted';
 
 const menuItems = [
   { text: 'Главная', href: '/', icon: <HomeIcon /> },
@@ -38,77 +39,62 @@ const secondSectionItems = [
 const Sidebar: React.FC<TrackListProps> = ({ isOpen, setOpen }) => {
   const ref = useRef(null);
   const router = useRouter();
-  const [isClose, setIsClose] = useState(true); // 💩💩💩
-  console.log(ref);
-
-  // useEffect(() => {
-  //   setIsClose(isOpen);
-  // }, []);
-  console.log(isOpen, isClose);
+  const { current: isMounted } = useIsMounted();
 
   useOutsideClick(ref, () => {
-    console.log(ref);
-
     setOpen(false);
-    setIsClose(false);
   });
 
   return (
     <>
       <SScrim isOpen={isOpen} ref={ref} />
-      <SSidebar isOpen={isOpen} close={isClose}>
-        {/* Logo */}
-        <SLogoWrapper>
-          <SBurger
-            onClick={() => {
-              setOpen(false);
-              setIsClose(false);
-            }}
-          >
-            <MenuIcon />
-          </SBurger>
-          <Link href={'/'}>
-            <SLogo>Soundbar</SLogo>
-          </Link>
-        </SLogoWrapper>
+      {isMounted && (
+        <SSidebar isOpen={isOpen} isMounted={isMounted}>
+          {/* Logo */}
+          <SLogoWrapper>
+            <SBurger onClick={() => setOpen(false)}>
+              <MenuIcon />
+            </SBurger>
+            <Link href={'/'}>
+              <SLogo>Soundbar</SLogo>
+            </Link>
+          </SLogoWrapper>
 
-        {/* Menu */}
-        <SMenu>
-          <SSection>
-            {menuItems.map((item) => (
-              <Link href={item.href}>
-                <SLink
-                  onClick={() => {
-                    setOpen(false);
-                    setIsClose(false);
-                  }}
-                  active={item.href === router.route}
-                >
-                  <SIcon>{item.icon}</SIcon>
-                  <SEndpoint>{item.text}</SEndpoint>
-                </SLink>
-              </Link>
-            ))}
-          </SSection>
+          {/* Menu */}
+          <SMenu>
+            <SSection>
+              {menuItems.map((item) => (
+                <Link href={item.href}>
+                  <SLink
+                    onClick={() => setOpen(false)}
+                    active={item.href === router.route}
+                  >
+                    <SIcon>{item.icon}</SIcon>
+                    <SEndpoint>{item.text}</SEndpoint>
+                  </SLink>
+                </Link>
+              ))}
+            </SSection>
 
-          <SSection marginTop={20} border>
-            {secondSectionItems.map((item) => (
-              <Link href={item.href}>
-                <SLink
-                  onClick={() => {
-                    setOpen(false);
-                    setIsClose(false);
-                  }}
-                  active={item.href === router.route}
-                >
-                  <SIcon>{item.icon}</SIcon>
-                  <SEndpoint>{item.text}</SEndpoint>
-                </SLink>
-              </Link>
-            ))}
-          </SSection>
-        </SMenu>
-      </SSidebar>
+            <SSection marginTop={20} border>
+              {secondSectionItems.map((item) => (
+                <Link href={item.href}>
+                  <SLink
+                    onClick={() => {
+                      setOpen(false);
+                      // setIsClose(false);
+                    }}
+                    active={item.href === router.route}
+                  >
+                    <SIcon>{item.icon}</SIcon>
+                    <SEndpoint>{item.text}</SEndpoint>
+                  </SLink>
+                </Link>
+              ))}
+            </SSection>
+          </SMenu>
+        </SSidebar>
+      )}
     </>
   );
 };

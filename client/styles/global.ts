@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   * {
@@ -78,4 +78,16 @@ export default createGlobalStyle`
     font-size: inherit;
     font-weight: inherit;
   }
+`;
+
+export const SPage = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+`;
+
+export const SMainWrapper = styled.div`
+  overflow-x: hidden;
+  height: 100vh;
+  width: 100%;
 `;
