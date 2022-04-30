@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { TrackListProps } from './props/SidebarProps';
 import MenuIcon from '@mui/icons-material/Menu';
 import useOutsideClick from '../../hooks/useClickOutside';
@@ -38,24 +38,38 @@ const secondSectionItems = [
 const Sidebar: React.FC<TrackListProps> = ({ isOpen, setOpen }) => {
   const ref = useRef(null);
   const router = useRouter();
-  console.log(router.route);
+  const [isClose, setIsClose] = useState(true); // 💩💩💩
+  console.log(ref);
+
+  // useEffect(() => {
+  //   setIsClose(isOpen);
+  // }, []);
+  console.log(isOpen, isClose);
 
   useOutsideClick(ref, () => {
     console.log(ref);
 
     setOpen(false);
+    setIsClose(false);
   });
 
   return (
     <>
       <SScrim isOpen={isOpen} ref={ref} />
-      <SSidebar isOpen={isOpen}>
+      <SSidebar isOpen={isOpen} close={isClose}>
         {/* Logo */}
         <SLogoWrapper>
-          <SBurger onClick={() => setOpen(false)}>
+          <SBurger
+            onClick={() => {
+              setOpen(false);
+              setIsClose(false);
+            }}
+          >
             <MenuIcon />
           </SBurger>
-          <SLogo>Soundbar</SLogo>
+          <Link href={'/'}>
+            <SLogo>Soundbar</SLogo>
+          </Link>
         </SLogoWrapper>
 
         {/* Menu */}
@@ -64,7 +78,10 @@ const Sidebar: React.FC<TrackListProps> = ({ isOpen, setOpen }) => {
             {menuItems.map((item) => (
               <Link href={item.href}>
                 <SLink
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    setIsClose(false);
+                  }}
                   active={item.href === router.route}
                 >
                   <SIcon>{item.icon}</SIcon>
@@ -78,7 +95,10 @@ const Sidebar: React.FC<TrackListProps> = ({ isOpen, setOpen }) => {
             {secondSectionItems.map((item) => (
               <Link href={item.href}>
                 <SLink
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    setIsClose(false);
+                  }}
                   active={item.href === router.route}
                 >
                   <SIcon>{item.icon}</SIcon>

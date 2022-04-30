@@ -2,7 +2,7 @@
 const theme = {
   main: '#1976d2',
   white: '#fff',
-  black: '#000',
+  black: '#232526',
   border: '#cccccc',
 };
 

@@ -16,11 +16,30 @@ import {
 } from './style';
 import { useState } from 'react';
 import Sidebar from '../Sidebar';
+import { useDispatch } from 'react-redux';
+import { NextThunkDispatch } from '../../store';
+import { searchTracks } from '../../store/actions-creators/track';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const dispatch = useDispatch() as NextThunkDispatch;
+  const [query, setQuery] = useState<string>('');
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   // console.log('перерендер Navbar');
   // console.log(sidebarOpen);
+
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    if (timer) {
+      clearTimeout(timer);
+    }
+    setTimer(
+      setTimeout(async () => {
+        await dispatch(await searchTracks(e.target.value));
+      }, 500),
+    );
+  };
 
   return (
     <Container>
@@ -32,12 +51,19 @@ const Navbar = () => {
         <Burger onClick={() => setSidebarOpen(true)}>
           <MenuIcon />
         </Burger>
-        <Logo>Soundbar</Logo>
+        <Link href={'/'}>
+          <Logo>Soundbar</Logo>
+        </Link>
       </LogoWrapper>
 
       {/* Search */}
       <SearchWrapper>
-        <SearchField type="text" placeholder="Найти трек..." />
+        <SearchField
+          type="text"
+          placeholder="Найти трек..."
+          value={query}
+          onChange={search}
+        />
         <SearchIcon>
           <MuiSearchIcon />
         </SearchIcon>

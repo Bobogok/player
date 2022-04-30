@@ -6,8 +6,6 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import MainLayout from '../../layout/MainLayout';
 import { NextThunkDispatch, wrapper } from '../../store';
 import { fetchTracks, searchTracks } from '../../store/actions-creators/track';
-import { ITrack } from '../../types/track';
-import { useDispatch } from 'react-redux';
 
 const CustomizedCard = styled(Card)`
   width: 900px;
@@ -15,22 +13,7 @@ const CustomizedCard = styled(Card)`
 
 const Index = () => {
   const router = useRouter();
-  const dispatch = useDispatch() as NextThunkDispatch;
   const { tracks, error } = useTypedSelector((state) => state.track);
-  const [query, setQuery] = useState<string>('');
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-
-  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-    if (timer) {
-      clearTimeout(timer);
-    }
-    setTimer(
-      setTimeout(async () => {
-        await dispatch(await searchTracks(e.target.value));
-      }, 500),
-    );
-  };
 
   if (error) {
     return (
@@ -60,7 +43,6 @@ const Index = () => {
               </Box>
             </Grid>
           </Box>
-          <TextField fullWidth value={query} onChange={search} />
           <TrackList tracks={tracks} />
         </CustomizedCard>
       </Grid>

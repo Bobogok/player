@@ -30,6 +30,7 @@ export const Logo = styled.div`
   font-size: 25px;
   font-weight: 500;
   user-select: none;
+  cursor: pointer;
 `;
 
 export const SearchWrapper = styled.div`

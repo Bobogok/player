@@ -1,71 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
 
-const slide = keyframes`
-  from {
-    transform: translate3d(-100%, 0, 0);
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-`;
-
-const slideOut = keyframes`
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(-100%, 0, 0);
-  }
-`;
-
-export const SSidebar = styled.div<{ isOpen: boolean }>`
-  // transform: translate3d(-100%, 0, 0);
-  transform: ${({ isOpen }) =>
-    isOpen ? 'translate3d(0, 0, 0)' : 'translate3d(-100%, 0, 0)'};
-  animation: ${({ isOpen }) =>
-    isOpen
-      ? css`
-          ${slide} 0.2s ease-out
-        `
-      : css`
-          ${slideOut} 0.2s ease-out
-        `};
-  width: 260px;
-  background-color: ${({ theme }) => theme.white};
-  height: 100vh;
-  padding: 0px 16px;
-  position: fixed;
-  z-index: 999;
-  // opacity: 0.5;
-  top: 0;
-  left: 0;
-`;
-
-export const SLogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 14px 0;
-`;
-
-export const SBurger = styled.button`
-  margin-right: 16px;
-  margin-top: 2px;
-
-  & > svg {
-    color: ${({ theme }) => theme.black};
-    font-size: 30px;
-  }
-`;
-
-export const SLogo = styled.div`
-  color: ${({ theme }) => theme.black};
-  font-size: 25px;
-  font-weight: 500;
-  user-select: none;
-`;
-
 const scrimIn = keyframes`
   from {
     opacity: 0;
@@ -89,6 +23,83 @@ const scrimOut = keyframes`
     opacity: 0;
     transform: translateZ(0);
   }
+`;
+
+const slide = keyframes`
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+`;
+
+export const SSidebar = styled.div<{ isOpen: boolean; close: boolean }>`
+  // 💩💩💩
+  ${({ close, isOpen }) => {
+    if (!isOpen && close) {
+      return css`
+        transform: translate3d(-100%, 0, 0);
+      `;
+    } else if ((isOpen && !close) || (isOpen && close)) {
+      return css`
+        transform: translate3d(0, 0, 0);
+        animation: ${slide} 0.2s ease-out;
+      `;
+    } else if (!isOpen && !close) {
+      return css`
+        transform: translate3d(-100%, 0, 0);
+        animation: ${slideOut} 0.2s ease-out;
+      `;
+    }
+  }};
+
+  width: 260px;
+  background-color: ${({ theme }) => theme.white};
+  height: 100vh;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+`;
+
+export const SLogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 60px;
+  background-color: ${({ theme }) => theme.main};
+  box-shadow: 0px 5px 10px 2px ${(props) => props.theme.border};
+`;
+
+export const SBurger = styled.button`
+  margin-right: 16px;
+  margin-top: 2px;
+
+  & > svg {
+    color: ${({ theme }) => theme.white};
+    font-size: 30px;
+  }
+`;
+
+export const SLogo = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-size: 25px;
+  font-weight: 500;
+  user-select: none;
+  cursor: pointer;
 `;
 
 export const SScrim = styled.div<{ isOpen: boolean }>`
@@ -141,14 +152,58 @@ export const SSection = styled.div<{ marginTop?: number; border?: boolean }>`
 `;
 
 export const SLink = styled.div<{ active?: boolean }>`
-  min-height: 40px;
+  min-height: 50px;
+  padding: 0px 16px;
+  margin-right: 16px;
   display: flex;
   align-items: center;
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
-  border-radius: 3px;
-  ${({ active, theme }) => active && `border: 1px solid ${theme.main}`};
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  transition: all 0.13s ease-out;
+  position: relative;
+  ${({ active, theme }) =>
+    active &&
+    css`
+      background-color: ${theme.main};
+      border-top-right-color: ${theme.main};
+
+      // этот блок переделать
+      & > div {
+        svg {
+          color: white;
+        }
+      }
+
+      &:hover > div {
+        svg {
+          color: white !important;
+        }
+      }
+
+      & > a {
+        color: white;
+      }
+    `};
+
+  &:hover {
+    box-shadow: 7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+  }
+
+  &:active {
+    box-shadow: 7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+  }
+`;
+
+export const SEndpoint = styled.a`
+  color: ${({ theme }) => theme.black};
+
+  ${SLink}:hover & {
+    transition: color 0.13s ease-out;
+    // color: ${({ theme }) => theme.main};
+  }
 `;
 
 export const SIcon = styled.div`
@@ -160,8 +215,9 @@ export const SIcon = styled.div`
     color: ${({ theme }) => theme.black};
     font-size: 23px;
   }
-`;
 
-export const SEndpoint = styled.a`
-  color: ${({ theme }) => theme.black};
+  ${SLink}:hover & > svg {
+    transition: color 0.13s ease-out;
+    color: ${({ theme }) => theme.main};
+  }
 `;
