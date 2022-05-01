@@ -5,7 +5,8 @@ import PlayIcon from '@mui/icons-material/PlayCircleFilledOutlined';
 import PauseIcon from '@mui/icons-material/PauseCircleOutlineOutlined';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import RepeatIcon from '@mui/icons-material/Repeat';
+import RepeatOffIcon from '@mui/icons-material/Repeat';
+import RepeatOnIcon from '@mui/icons-material/RepeatOnOutlined';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useActions } from '../../hooks/useAction';
@@ -14,6 +15,7 @@ import { convertToSeconds, trottlingEvents } from '../../src/helpers';
 import VolumeBar from '../VolumeBar';
 import {
   Album,
+  Button,
   Container,
   Controls,
   Icons,
@@ -31,6 +33,7 @@ import {
 let audio: HTMLAudioElement;
 
 const Player = () => {
+  const [isLoop, setIsLoop] = useState(false);
   const { pause, volume, active, duration, currentTime } = useTypedSelector(
     (state) => state.player,
   );
@@ -59,6 +62,11 @@ const Player = () => {
     position: 0,
     time: '00:00',
   });
+
+  const handleRepeat = () => {
+    setIsLoop((prev) => !prev);
+    audio.loop = isLoop;
+  };
 
   if (audio && pause) {
     audio.pause();
@@ -134,7 +142,9 @@ const Player = () => {
     <Container>
       {/* ProgressBar */}
       <ProgressBar
-        style={{ transform: `scaleX(${audio?.currentTime / duration})` }}
+        style={{
+          transform: `scaleX(${audio?.currentTime / duration})`,
+        }}
       />
       <Playbar onClick={changeCurrentTime} onMouseMove={changeTooltip}>
         <Tooltip style={{ left: `${tooltip.position! - 30}px` }}>
@@ -168,13 +178,21 @@ const Player = () => {
 
       {/* Controls */}
       <Controls>
-        <ShuffleIcon sx={{ fontSize: 20 }} />
-        <SkipPreviousIcon sx={{ fontSize: 25 }} />
+        <Button fontSize={20}>
+          <ShuffleIcon />
+        </Button>
+        <Button fontSize={25}>
+          <SkipPreviousIcon />
+        </Button>
         <PlayButton onClick={pauseClick}>
           {!pause ? <PauseIcon /> : <PlayIcon />}
         </PlayButton>
-        <SkipNextIcon sx={{ fontSize: 25 }} />
-        <RepeatIcon sx={{ fontSize: 20 }} />
+        <Button fontSize={25}>
+          <SkipNextIcon />
+        </Button>
+        <Button onClick={handleRepeat} fontSize={20} isLoop={isLoop}>
+          {isLoop ? <RepeatOnIcon /> : <RepeatOffIcon />}
+        </Button>
       </Controls>
 
       {/* volume */}

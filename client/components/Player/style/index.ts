@@ -37,8 +37,7 @@ export const Playbar = styled.div`
   left: 0;
   bottom: 65px;
   height: 16px;
-  opacity: 0.3;
-  background-color: ${(props) => props.theme.main};
+  background-color: ${(props) => props.theme.main}60; // 60 - opacity
 `;
 
 export const ProgressBar = styled.div`
@@ -166,18 +165,29 @@ export const Controls = styled.div`
   align-items: center;
   justify-content: center;
 
-  & > svg {
-    margin: 0 20px;
+  & > button {
+    margin: 0 10px;
   }
 
   @media (max-width: 768px) {
-    & > svg {
+    & > button {
       margin: 0 8px;
     }
   }
 
   @media (max-width: 450px) {
     justify-content: flex-end;
+  }
+`;
+
+export const Button = styled.button<{ fontSize?: number; isLoop?: boolean }>`
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 10px;
+
+  & > svg {
+    font-size: ${({ fontSize }) => fontSize};
+    color: ${({ isLoop, theme }) => isLoop && theme.main};
   }
 `;
 
