@@ -1,5 +1,6 @@
 import { Box, Grid } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { shallowEqual, useStore } from 'react-redux';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import TrackItem from '../TrackItem';
 import { TrackListProps } from './props/TrackListProps';
@@ -11,6 +12,7 @@ const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
       return curr.pause === next.pause && curr.active?._id === next.active?._id;
     },
   );
+
   return (
     <Grid container direction={'column'}>
       <Box p={2}>

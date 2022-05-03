@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Delete, Pause, PlayArrow } from '@mui/icons-material';
 import { Grid, IconButton, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { NextThunkDispatch } from '../../store';
@@ -14,7 +14,8 @@ const TrackItem: React.FC<TrackItemProps> = ({ track }) => {
   const router = useRouter();
   const dispatch = useDispatch() as NextThunkDispatch;
   const { playTrack, pauseTrack, setActiveTrack } = useActions();
-  const { pause, active } = useTypedSelector((state) => state.player);
+  const store = useStore();
+  const { pause, active } = store.getState().player;
 
   const play = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
