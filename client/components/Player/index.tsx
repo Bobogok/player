@@ -11,7 +11,6 @@ import ShuffleIcon from '@mui/icons-material/Shuffle';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { convertToSeconds, trottlingEvents } from '../../src/helpers';
 import VolumeBar from '../VolumeBar';
 import {
   Album,
@@ -19,49 +18,43 @@ import {
   Container,
   Controls,
   Icons,
-  Playbar,
   PlayButton,
   PrevueTrack,
-  ProgressBar,
-  ProgressText,
   TextWrapper,
-  Tooltip,
   Typography,
   Volume,
 } from './style';
+import ProgressBar from '../ProgressBar';
+import { PlayerState } from '../../types/player';
 
 let audio: HTMLAudioElement;
 
 const Player = () => {
   const [isLoop, setIsLoop] = useState(false);
-  const { pause, volume, active, duration, currentTime } = useTypedSelector(
+
+  const checkEqual = (curr: PlayerState, next: PlayerState) => {
+    return curr.pause === next.pause && curr.active?._id === next.active?._id;
+  };
+
+  const { pause, volume, active, currentTime } = useTypedSelector(
     (state) => state.player,
+    checkEqual,
   );
-  const {
-    pauseTrack,
-    playTrack,
-    setVolume,
-    setCurrentTime,
-    setDuration,
-    setActiveTrack,
-  } = useActions();
+
+  const { pauseTrack, playTrack, setCurrentTime, setDuration } = useActions();
 
   const setAudio = () => {
     if (active && !currentTime) {
       audio.src = 'http://localhost:5000/' + active.audio;
       audio.volume = volume / 100;
       audio.onloadedmetadata = () => {
-        setDuration(Math.ceil(audio.duration));
+        setDuration(audio.duration);
       };
       audio.ontimeupdate = () => {
-        setCurrentTime(Math.ceil(audio.currentTime));
+        setCurrentTime(audio.currentTime);
       };
     }
   };
-  const [tooltip, setToolTip] = useState<{ position: number; time: string }>({
-    position: 0,
-    time: '00:00',
-  });
 
   const handleRepeat = () => {
     setIsLoop((prev) => !prev);
@@ -94,24 +87,6 @@ const Player = () => {
     }
   };
 
-  const changeVolume = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let volume = +e.target.value;
-      audio.volume = volume / 100;
-      setVolume(volume);
-    },
-    [volume],
-  );
-
-  const changeCurrentTime = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    const target = e.target as HTMLTextAreaElement;
-    let time = duration * (e.clientX / target.clientWidth);
-    audio.currentTime = time;
-    setCurrentTime(time);
-  };
-
   useEffect(() => {
     if (!audio) {
       audio = new Audio();
@@ -125,34 +100,10 @@ const Player = () => {
     return null;
   }
 
-  const changeTooltip = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const target = e.target as HTMLTextAreaElement;
-    trottlingEvents(
-      () =>
-        setToolTip({
-          position: e.clientX,
-          time: convertToSeconds(duration * (e.clientX / target.clientWidth)),
-        }),
-      15,
-      e.type,
-    );
-  };
-
   return (
     <Container>
       {/* ProgressBar */}
-      <ProgressBar
-        style={{
-          transform: `scaleX(${audio?.currentTime / duration})`,
-        }}
-      />
-      <Playbar onClick={changeCurrentTime} onMouseMove={changeTooltip}>
-        <Tooltip style={{ left: `${tooltip.position! - 30}px` }}>
-          {tooltip.time}
-        </Tooltip>
-        <ProgressText>{convertToSeconds(currentTime)}</ProgressText>
-        <ProgressText>{convertToSeconds(duration)}</ProgressText>
-      </Playbar>
+      <ProgressBar audio={audio} />
 
       {/* PrevueTrack */}
       <Album>
@@ -197,7 +148,7 @@ const Player = () => {
 
       {/* volume */}
       <Volume>
-        <VolumeBar volume={volume} onChange={changeVolume} />
+        <VolumeBar audio={audio} />
       </Volume>
     </Container>
   );

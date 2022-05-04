@@ -1,17 +1,17 @@
+import React from 'react';
 import { Box, Grid } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useStore } from 'react-redux';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { PlayerState } from '../../types/player';
 import TrackItem from '../TrackItem';
 import { TrackListProps } from './props/TrackListProps';
 
 const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
-  useTypedSelector(
-    (state) => state.player,
-    (curr, next) => {
-      return curr.pause === next.pause && curr.active?._id === next.active?._id;
-    },
-  );
+  const isEqual = (curr: PlayerState, next: PlayerState) => {
+    return curr.pause === next.pause && curr.active?._id === next.active?._id;
+  };
+
+  // ререндер, если поменяется трек или поставить на паузу
+  useTypedSelector((state) => state.player, isEqual);
 
   return (
     <Grid container direction={'column'}>

@@ -1,11 +1,28 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { VolumeBarProps } from './props/VolumeBarProps';
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined';
 import VolumeDownOutlinedIcon from '@mui/icons-material/VolumeDownOutlined';
 import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
 import { Volume } from './style';
+import { PlayerState } from '../../types/player';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useAction';
 
-const VolumeBar: React.FC<VolumeBarProps> = memo(({ volume, onChange }) => {
+const VolumeBar: React.FC<VolumeBarProps> = ({ audio }) => {
+  const { setVolume } = useActions();
+
+  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let volume = +e.target.value;
+    audio.volume = volume / 100;
+    setVolume(volume);
+  };
+
+  const checkEqual = (curr: PlayerState, next: PlayerState) => {
+    return curr.volume === next.volume;
+  };
+
+  const { volume } = useTypedSelector((state) => state.player, checkEqual);
+
   return (
     <Volume>
       {(() => {
@@ -22,10 +39,10 @@ const VolumeBar: React.FC<VolumeBarProps> = memo(({ volume, onChange }) => {
         min={0}
         max={100}
         value={volume}
-        onChange={onChange}
+        onChange={changeVolume}
       />
     </Volume>
   );
-});
+};
 
 export default VolumeBar;
