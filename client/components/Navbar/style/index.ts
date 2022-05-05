@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 
-export const Container = styled.header`
+export const Header = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: ${(props) => props.theme.main};
   height: 60px;
-  box-shadow: 0px 5px 10px 2px ${(props) => props.theme.border};
+  box-shadow: -6px -6px 19px 0px #000000a6;
+  z-index: 100;
 `;
 
 export const LogoWrapper = styled.div`

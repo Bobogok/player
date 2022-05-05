@@ -39,6 +39,7 @@ export const PrevueTrack = styled.div`
 `;
 
 export const Typography = styled.a<{ variant: string }>`
+  white-space: nowrap;
   max-width: 120px;
   text-overflow: ellipsis;
   overflow: hidden;

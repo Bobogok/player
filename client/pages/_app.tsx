@@ -11,8 +11,7 @@ import { useState } from 'react';
 const WrappedApp: React.FC<AppProps> = (props: any) => {
   const { Component, pageProps, store, router } = props;
 
-  const startIndex = 0;
-  const [animation, setAnimation] = useState(animations[1]);
+  const [animation, setAnimation] = useState(animations[2]);
   const [exitBefore, setExitBefore] = useState(false);
 
   return (

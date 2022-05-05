@@ -5,5 +5,6 @@ export const SWrapper = styled.div`
 `;
 
 export const SContainer = styled.div`
-  margin: 98px 0;
+  // max-width: 1366px;
+  margin: 0 auto;
 `;

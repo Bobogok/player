@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { PlayerState } from '../../types/player';
 import TrackItem from '../TrackItem';
 import { TrackListProps } from './props/TrackListProps';
+import { SChart, STracks, STrack, SContainer } from './style';
 
 const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
   const isEqual = (curr: PlayerState, next: PlayerState) => {
@@ -14,13 +14,17 @@ const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
   useTypedSelector((state) => state.player, isEqual);
 
   return (
-    <Grid container direction={'column'}>
-      <Box p={2}>
-        {tracks.map((track) => (
-          <TrackItem key={track._id} track={track} />
-        ))}
-      </Box>
-    </Grid>
+    <SChart>
+      <SContainer>
+        <STracks>
+          {tracks.map((track, index) => (
+            <STrack>
+              <TrackItem key={track._id} track={track} number={index + 1} />
+            </STrack>
+          ))}
+        </STracks>
+      </SContainer>
+    </SChart>
   );
 };
 

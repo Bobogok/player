@@ -61,6 +61,7 @@ export default createGlobalStyle`
   }
   a:hover {
     text-decoration: none;
+    cursor: pointer;
   }
   ul,
   li {
@@ -87,7 +88,7 @@ export const SPage = styled.div`
 `;
 
 export const SMainWrapper = styled.div`
-  overflow-x: hidden;
+  // overflow-x: hidden;
   height: 100vh;
   width: 100%;
 `;

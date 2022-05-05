@@ -5,7 +5,7 @@ import Notifications from '@mui/icons-material/NotificationsNoneOutlined';
 import {
   Avatar,
   Burger,
-  Container,
+  Header,
   Logo,
   LogoWrapper,
   ProfileIcon,
@@ -42,7 +42,7 @@ const Navbar = () => {
   };
 
   return (
-    <Container>
+    <Header>
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
 
@@ -79,7 +79,7 @@ const Navbar = () => {
         </ProfileIcon>
         <Avatar />
       </ProfileWrapper>
-    </Container>
+    </Header>
   );
 };
 
