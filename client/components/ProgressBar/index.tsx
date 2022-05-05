@@ -6,7 +6,11 @@ import { PlayerState } from '../../types/player';
 import { ProgressBarProps } from './props/ProgressBarProps';
 import { SPlaybar, SProgressBar, SProgressText, STooltip } from './style';
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ audio }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({
+  audio,
+  nextTrack,
+  isLoop,
+}) => {
   const isEqual = (curr: PlayerState, next: PlayerState) => {
     return (
       curr.pause === next.pause &&
@@ -26,6 +30,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ audio }) => {
     position: 0,
     time: '00:00',
   });
+
+  // автоматическое переключение на следующий трек
+  if (duration !== 0 && !isLoop && duration === currentTime) {
+    nextTrack();
+  }
 
   const changeCurrentTime = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,

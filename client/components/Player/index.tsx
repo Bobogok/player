@@ -8,7 +8,7 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import RepeatOffIcon from '@mui/icons-material/Repeat';
 import RepeatOnIcon from '@mui/icons-material/RepeatOnOutlined';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useActions } from '../../hooks/useAction';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import VolumeBar from '../VolumeBar';
@@ -26,22 +26,28 @@ import {
 } from './style';
 import ProgressBar from '../ProgressBar';
 import { PlayerState } from '../../types/player';
+import { useStore } from 'react-redux';
+import { RootState } from '../../store/reducers';
+import { ITrack } from '../../types/track';
 
 let audio: HTMLAudioElement;
 
+const checkEqual = (curr: PlayerState, next: PlayerState) => {
+  return curr.pause === next.pause && curr.active?._id === next.active?._id;
+};
+
 const Player = () => {
+  const store = useStore();
+  const state: RootState = store.getState();
   const [isLoop, setIsLoop] = useState(false);
 
-  const checkEqual = (curr: PlayerState, next: PlayerState) => {
-    return curr.pause === next.pause && curr.active?._id === next.active?._id;
-  };
+  const { pauseTrack, playTrack, setCurrentTime, setDuration, setActiveTrack } =
+    useActions();
 
   const { pause, volume, active, currentTime } = useTypedSelector(
     (state) => state.player,
     checkEqual,
   );
-
-  const { pauseTrack, playTrack, setCurrentTime, setDuration } = useActions();
 
   const setAudio = () => {
     if (active && !currentTime) {
@@ -56,9 +62,30 @@ const Player = () => {
     }
   };
 
+  const nextTrack = () => {
+    const tracks = state.track.tracks;
+    const curr = tracks.find((elem) => elem._id === active!._id);
+    const currentIndex = tracks.indexOf(curr as ITrack);
+    const nextIndex = (currentIndex + 1) % tracks.length;
+    setActiveTrack(tracks[nextIndex]);
+  };
+
+  const prevTrack = () => {
+    const tracks = state.track.tracks;
+    const curr = tracks.find((elem) => elem._id === active!._id);
+    const currentIndex = tracks.indexOf(curr as ITrack);
+    const prevIndex =
+      currentIndex - 1 !== -1 ? currentIndex - 1 : tracks.length - 1;
+    setActiveTrack(tracks[prevIndex]);
+  };
+
   const handleRepeat = () => {
     setIsLoop((prev) => !prev);
-    audio.loop = isLoop;
+    if (audio.loop === true) {
+      audio.loop = false;
+    } else {
+      audio.loop = true;
+    }
   };
 
   if (audio && pause) {
@@ -103,7 +130,7 @@ const Player = () => {
   return (
     <Container>
       {/* ProgressBar */}
-      <ProgressBar audio={audio} />
+      <ProgressBar audio={audio} nextTrack={nextTrack} isLoop={isLoop} />
 
       {/* PrevueTrack */}
       <Album>
@@ -132,13 +159,13 @@ const Player = () => {
         <Button fontSize={20}>
           <ShuffleIcon />
         </Button>
-        <Button fontSize={25}>
+        <Button onClick={prevTrack} fontSize={25}>
           <SkipPreviousIcon />
         </Button>
         <PlayButton onClick={pauseClick}>
           {!pause ? <PauseIcon /> : <PlayIcon />}
         </PlayButton>
-        <Button fontSize={25}>
+        <Button onClick={nextTrack} fontSize={25}>
           <SkipNextIcon />
         </Button>
         <Button onClick={handleRepeat} fontSize={20} isLoop={isLoop}>
