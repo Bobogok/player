@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
+import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 import Player from '../../components/Player';
 import MainLayoutProps from './props/MainLayoutProps';
@@ -34,6 +35,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <Navbar />
         <SContainer>{children}</SContainer>
         <Player />
+        <Footer />
       </SWrapper>
     </>
   );

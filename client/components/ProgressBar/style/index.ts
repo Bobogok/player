@@ -10,10 +10,13 @@ export const SPlaybar = styled.div`
   left: 0;
   bottom: 65px;
   height: 16px;
-  background-color: ${(props) => props.theme.main}60; // 60 - opacity
+  // background-color: ${(props) => props.theme.main}60; // 60 - opacity
+  background-color: #a8cbee;
 `;
 
 export const SProgressBar = styled.div`
+  user-select: none;
+  pointer-events: none;
   display: flex;
   position: absolute;
   right: 0;
@@ -24,6 +27,7 @@ export const SProgressBar = styled.div`
   background: ${(props) => props.theme.main};
   transform-origin: 0;
   transition: transform 0.3s linear;
+  z-index: 2;
 `;
 
 export const SProgressText = styled.div`
@@ -33,6 +37,7 @@ export const SProgressText = styled.div`
   user-select: none;
   pointer-events: none;
   position: relative;
+  z-index: 2;
 
   ${SPlaybar}:hover & {
     display: block;

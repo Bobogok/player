@@ -12,7 +12,6 @@ const Index = () => {
     <MainLayout>
       <ChartHeader tracks={tracks} />
       <TrackList tracks={tracks} />
-      <footer style={{ height: 500 }}></footer>
     </MainLayout>
   );
 };

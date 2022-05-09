@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SChart = styled.main`
-  margin: 30px auto;
+  margin: 30px 10px;
   max-width: 1366px;
   display: flex;
 `;
@@ -16,5 +16,5 @@ export const STracks = styled.ul`
 `;
 
 export const STrack = styled.li`
-  margin: 10px;
+  margin: 10px 0;
 `;
