@@ -37,19 +37,19 @@ const secondSectionItems = [
 ];
 
 const Sidebar: React.FC<TrackListProps> = ({ isOpen, setOpen }) => {
-  const ref = useRef(null);
   const router = useRouter();
   const { current: isMounted } = useIsMounted();
 
+  const ref = useRef(null);
   useOutsideClick(ref, () => {
     setOpen(false);
   });
 
   return (
     <>
-      <SScrim isOpen={isOpen} ref={ref} />
+      <SScrim isOpen={isOpen} />
       {isMounted && (
-        <SSidebar isOpen={isOpen} isMounted={isMounted}>
+        <SSidebar isOpen={isOpen} isMounted={isMounted} ref={ref}>
           {/* Logo */}
           <SLogoWrapper>
             <SBurger onClick={() => setOpen(false)}>

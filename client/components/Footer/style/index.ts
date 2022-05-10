@@ -6,7 +6,9 @@ export const SFooter = styled.footer`
 `;
 
 export const SMain = styled.div`
+  max-width: 1366px;
   display: flex;
+  margin: 0 auto;
   margin-bottom: 30px;
 
   & > ul:not(:last-child) {
