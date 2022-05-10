@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 export const SChart = styled.main`
-  margin: 30px 10px;
+  // margin: 30px 10px;
+  margin: 30px auto;
+  justify-content: center;
   max-width: 1366px;
   display: flex;
 `;
 
 export const SContainer = styled.div`
   position: relative;
-  width: 60%;
+  // max-width: 900px;
+  flex: 1 1 100%;
 `;
 
 export const STracks = styled.ul`
@@ -17,4 +20,27 @@ export const STracks = styled.ul`
 
 export const STrack = styled.li`
   margin: 10px 0;
+`;
+
+export const SSidebar = styled.div`
+  position: relative;
+  // flex: 1 0 350px;
+  min-width: fit-content;
+  max-width: 40%;
+  padding-right: 15px;
+  margin-left: 50px;
+`;
+
+export const STeaserWrapper = styled.div`
+  position: sticky;
+  top: 90px;
+  width: 100%;
+  // padding-bottom: 15px;
+`;
+
+export const STeaser = styled.a`
+  display: block;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  overflow: hidden;
 `;

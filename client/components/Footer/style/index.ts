@@ -44,6 +44,7 @@ export const SFollow = styled.div`
 export const STitleFollow = styled.h3`
   line-height: 40px;
   color: ${({ theme }) => theme.white};
+  margin-bottom: 6px;
 `;
 
 export const SMediaWrapper = styled.ul`
@@ -53,9 +54,10 @@ export const SMediaWrapper = styled.ul`
 
 export const SMedia = styled.li`
   margin: 0 15px;
-  width: 20px;
-  height: 20px;
-  background-color: red;
+`;
+
+export const SMediaLink = styled.a`
+  color: ${({ theme }) => theme.white};
 `;
 
 export const SCopyright = styled.div`

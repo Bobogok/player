@@ -10,6 +10,7 @@ import {
   SMediaWrapper,
   SMedia,
   SCopyright,
+  SMediaLink,
 } from './style';
 
 const Footer = () => {
@@ -35,16 +36,19 @@ const Footer = () => {
       <SFollow>
         <STitleFollow>Подпишись на нас</STitleFollow>
         <SMediaWrapper>
-          <SMedia></SMedia>
-          <SMedia></SMedia>
-          <SMedia></SMedia>
-          <SMedia></SMedia>
+          <SMedia>
+            <SMediaLink>Facebook</SMediaLink>
+          </SMedia>
+          <SMedia>
+            <SMediaLink>Instagram</SMediaLink>
+          </SMedia>
+          <SMedia>
+            <SMediaLink>VK</SMediaLink>
+          </SMedia>
         </SMediaWrapper>
       </SFollow>
 
-      <SCopyright>
-        © 2022 Копирайт какой нибудь | Надо что то придумать
-      </SCopyright>
+      <SCopyright>© 2022 Soundbar</SCopyright>
     </SFooter>
   );
 };

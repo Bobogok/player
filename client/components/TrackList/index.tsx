@@ -1,51 +1,32 @@
 import React from 'react';
-import styled from 'styled-components';
+import Image from 'next/image';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { PlayerState } from '../../types/player';
 import TrackItem from '../TrackItem';
 import { TrackListProps } from './props/TrackListProps';
-import { SChart, STracks, STrack, SContainer } from './style';
+import {
+  SChart,
+  STracks,
+  STrack,
+  SContainer,
+  SSidebar,
+  STeaser,
+  STeaserWrapper,
+} from './style';
 
-export const SSidebar = styled.div`
-  position: relative;
-  flex: 1 1 100%;
-  max-width: 40%;
-  padding-left: 30px;
-`;
-
-export const STeaserWrapper = styled.div`
-  position: sticky;
-  top: 90px;
-  width: 100%;
-  // padding-bottom: 15px;
-`;
-
-export const STeaser = styled.a`
-  // padding: 15px 0;
-  display: flex;
-  justify-content: center;
-  // width: 300px;
-  height: 100px;
-  background-color: ${({ theme }) => theme.main};
-  margin-bottom: 20px;
-  align-items: center;
-  border-radius: 5px;
-`;
-
-export const SText = styled.b`
-  font-weight: 700;
-  font-size: 30px;
-`;
+import popBanner from '../../public/images/banners/popHits.webp';
+import springStory from '../../public/images/banners/springStory.webp';
+import superHits from '../../public/images/banners/superHits.webp';
 
 const teasers = [
   {
-    text: 'Было популярно',
+    src: popBanner,
   },
   {
-    text: 'Слушают прямо сейчас',
+    src: springStory,
   },
   {
-    text: 'Бесконечный поток',
+    src: superHits,
   },
 ];
 
@@ -72,7 +53,16 @@ const TrackList: React.FC<TrackListProps> = ({ tracks }) => {
         <STeaserWrapper>
           {teasers.map((teaser) => (
             <STeaser>
-              <SText>{teaser.text}</SText>
+              <Image
+                src={teaser.src}
+                alt="Picture of the author"
+                width={300} // automatically provided
+                height={100} // automatically provided
+                // layout="responsive"
+                // objectFit="contain"
+                // blurDataURL="data:..." automatically provided
+                placeholder="blur" // Optional blur-up while loading
+              />
             </STeaser>
           ))}
         </STeaserWrapper>
