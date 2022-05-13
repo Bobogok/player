@@ -24,6 +24,7 @@ export enum TrackActionTypes {
   FETCH_TRACKS = 'FETCH_TRACKS',
   FETCH_TRACKS_ERROR = 'FETCH_TRACKS_ERROR',
   DELETE = 'DELETE',
+  ADD_LISTEN = 'ADD_LISTEN',
 }
 
 interface FetchTrackAction {
@@ -41,7 +42,13 @@ interface DeleteTrackAction {
   payload: string;
 }
 
+interface AddListenTrackAction {
+  type: TrackActionTypes.ADD_LISTEN;
+  payload: string;
+}
+
 export type TrackAction =
   | FetchTrackAction
   | FetchTrackErrorAction
-  | DeleteTrackAction;
+  | DeleteTrackAction
+  | AddListenTrackAction;

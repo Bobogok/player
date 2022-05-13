@@ -19,6 +19,16 @@ export const trackReducer = (
         ...state,
         tracks: state.tracks.filter((track) => track._id !== action.payload),
       };
+    case TrackActionTypes.ADD_LISTEN:
+      return {
+        ...state,
+        tracks: state.tracks.map((track) => {
+          if (track._id === action.payload) {
+            track.listens += 1;
+          }
+          return track;
+        }),
+      };
     default:
       return state;
   }

@@ -53,13 +53,5 @@ export const getServerSideProps = wrapper.getServerSideProps((store) =>
       const dispatch = store.dispatch as NextThunkDispatch;
       await dispatch(await fetchTracks());
     }
-    // else{
-    //   return{
-    //     props: {
-    //       addressDetails: state.address,
-    //     }
-    //   }
-    // }
-    // dispatch(fetchTracks())
   },
 );

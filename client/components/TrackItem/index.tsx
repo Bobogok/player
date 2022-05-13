@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Delete, Pause, PlayArrow } from '@mui/icons-material';
+import { Pause, PlayArrow } from '@mui/icons-material';
 import Favorite from '@mui/icons-material/FavoriteBorder';
 import Headphones from '@mui/icons-material/Headphones';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -8,10 +8,8 @@ import Share from '@mui/icons-material/ShareOutlined';
 import LibraryMusic from '@mui/icons-material/LibraryMusicOutlined';
 import PersonOutline from '@mui/icons-material/PersonOutlineOutlined';
 import { useRouter } from 'next/router';
-import { useDispatch, useStore } from 'react-redux';
+import { useStore } from 'react-redux';
 import { useActions } from '../../hooks/useAction';
-import { NextThunkDispatch } from '../../store';
-import { deleteTrack } from '../../store/actions-creators/track';
 import { TrackItemProps } from './props/TrackItemProps';
 import {
   SAlbum,
@@ -41,8 +39,8 @@ import useOutsideClick from '../../hooks/useClickOutside';
 
 const TrackItem: React.FC<TrackItemProps> = ({ track, number }) => {
   const router = useRouter();
-  const dispatch = useDispatch() as NextThunkDispatch;
-  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+  const { playTrack, pauseTrack, setActiveTrack, addListen, deleteTrack } =
+    useActions();
   const store = useStore();
   const { pause, active } = store.getState().player;
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -59,6 +57,7 @@ const TrackItem: React.FC<TrackItemProps> = ({ track, number }) => {
       setActiveTrack(track);
       localStorage.setItem('currentTrack', track._id);
       playTrack();
+      addListen(track._id);
     }
 
     if (
@@ -76,9 +75,9 @@ const TrackItem: React.FC<TrackItemProps> = ({ track, number }) => {
     setOpenMenu(true);
   };
 
-  const onDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    await dispatch(deleteTrack(track._id));
+    deleteTrack(track._id);
   };
 
   return (

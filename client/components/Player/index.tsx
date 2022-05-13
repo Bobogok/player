@@ -41,8 +41,14 @@ const Player = () => {
   const state: RootState = store.getState();
   const [isLoop, setIsLoop] = useState(false);
 
-  const { pauseTrack, playTrack, setCurrentTime, setDuration, setActiveTrack } =
-    useActions();
+  const {
+    pauseTrack,
+    playTrack,
+    setCurrentTime,
+    setDuration,
+    setActiveTrack,
+    addListen,
+  } = useActions();
 
   const { pause, volume, active, currentTime } = useTypedSelector(
     (state) => state.player,
@@ -68,6 +74,7 @@ const Player = () => {
     const currentIndex = tracks.indexOf(curr as ITrack);
     const nextIndex = (currentIndex + 1) % tracks.length;
     setActiveTrack(tracks[nextIndex]);
+    addListen(tracks[nextIndex]._id);
   };
 
   const prevTrack = () => {
@@ -77,6 +84,7 @@ const Player = () => {
     const prevIndex =
       currentIndex - 1 !== -1 ? currentIndex - 1 : tracks.length - 1;
     setActiveTrack(tracks[prevIndex]);
+    addListen(tracks[prevIndex]._id);
   };
 
   const handleRepeat = () => {
