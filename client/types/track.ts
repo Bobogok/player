@@ -12,7 +12,12 @@ export interface ITrack {
   listens: number;
   picture: string;
   audio: string;
+  videoURL: string;
+  genre: string;
   comments: IComments[];
+  likes: number;
+  duration: number;
+  date: Date;
 }
 
 export interface TrackState {
