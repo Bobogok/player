@@ -2,8 +2,9 @@ import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Headphones from '@mui/icons-material/Headphones';
+import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import { useInput } from '../../hooks/useInput';
 import MainLayout from '../../layout/MainLayout';
 import { ITrack } from '../../types/track';
@@ -23,9 +24,8 @@ export const SArticle = styled.article`
 
 export const SContent = styled.div`
   position: absolute;
-  top: 0;
+  top: calc(50px + 250px / 2);
   left: 0;
-  padding-top: calc(50px + 250px / 2);
   display: flex;
 `;
 
@@ -54,6 +54,8 @@ export const SListens = styled.div`
 export const SText = styled.div`
   flex: 1 1 100%;
   margin-left: 30px;
+  display: flex;
+  flex-direction: column;
 
   & > h1 {
     color: ${({ theme }) => theme.white};
@@ -71,11 +73,57 @@ export const SText = styled.div`
   }
 `;
 
+const rotate = keyframes`
+  from {
+    transform: translate(0, -20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+`;
+
+export const SPill = styled.div`
+  opacity: 1;
+  transform: translate(0, 0);
+  transition: transform 0.3s cubic-bezier(0.4, 0.2, 0, 1),
+    opacity 10ms 10ms linear;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  animation: ${rotate} 0.2s linear;
+`;
+
+export const SButton = styled.button`
+  position: relative;
+  color: ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.backgroundLight};
+  display: flex;
+  align-items: center;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin: auto 0;
+  max-width: 200px;
+  z-index: 2;
+
+  & > svg {
+    margin-right: 10px;
+  }
+`;
+
 const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
   const [track, setTrack] = useState<ITrack>(serverTrack);
   const router = useRouter();
   const username = useInput('');
   const text = useInput('');
+  const [onClickClipboard, setOnClickClipboard] = useState<boolean>(false);
 
   const addComment = async () => {
     try {
@@ -88,6 +136,14 @@ const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setOnClickClipboard(true);
+    setTimeout(() => {
+      setOnClickClipboard(false);
+    }, 1000);
   };
 
   return (
@@ -113,6 +169,11 @@ const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
                 <Headphones />
                 {serverTrack.listens}
               </SListens>
+              <SButton onClick={copyToClipboard}>
+                <ReplyOutlinedIcon />
+                Поделиться
+                {onClickClipboard && <SPill>Скопированно</SPill>}
+              </SButton>
             </SText>
           </SContent>
         </SArticle>
