@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { KeyboardEventHandler, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Headphones from '@mui/icons-material/Headphones';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
@@ -118,10 +118,112 @@ export const SButton = styled.button`
   }
 `;
 
+export const SLyrickWrapper = styled.div`
+  width: 95%;
+  max-width: 1340px;
+  margin: 150px auto 0;
+`;
+
+export const SLyrickH2 = styled.h2`
+  padding: 25px 0;
+  font-size: 30px;
+  font-weight: 700;
+  min-height: 50px;
+  color: ${({ theme }) => theme.text};
+`;
+
+export const SLirick = styled.p`
+  white-space: pre-wrap;
+  line-height: 26px;
+  color: ${({ theme }) => theme.textLight};
+`;
+
+export const SCommentsWrapper = styled.div`
+  width: 95%;
+  max-width: 1340px;
+  margin: 25px auto;
+`;
+
+export const SMyComment = styled.div`
+  display: flex;
+  margin: 20px 0;
+`;
+
+export const SComments = styled.div`
+  width: 95%;
+  max-width: 1340px;
+  margin: 50px auto;
+`;
+
+export const SCountComments = styled.div`
+  font-size: 16px;
+  line-height: 20px;
+
+  & > span {
+    margin-left: 10px;
+  }
+`;
+
+export const STextFieldWrapper = styled.div`
+  width: 100%;
+  border-bottom: 2px solid ${({ theme }) => theme.main};
+`;
+
+export const SNoComments = styled.div`
+  font-size: 16px;
+  line-height: 20px;
+`;
+
+export const STextField = styled.input`
+  width: 100%;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 10px 0;
+`;
+
+export const Avatar = styled.div`
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  margin-right: 10px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-size: cover;
+  background-image: url(https://avatars.mds.yandex.net/get-yapic/41409/rtL8xTFQQiWjrBHkgaNz1b0CLs-1/islands-retina-middle);
+`;
+
+export const SCommentItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  align-items: stretch;
+`;
+
+export const SCommentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  font-size: 12px;
+  line-height: 15px;
+`;
+
+export const SCommentAuthor = styled.div`
+  color: ${({ theme }) => theme.textLight};
+`;
+
+export const SCommentBody = styled.div`
+  word-wrap: break-word;
+  word-break: break-word;
+  color: ${({ theme }) => theme.text};
+`;
+
 const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
   const [track, setTrack] = useState<ITrack>(serverTrack);
   const router = useRouter();
-  const username = useInput('');
+  const username = useInput('NONAME'); // Моковый юзернейм
   const text = useInput('');
   const [onClickClipboard, setOnClickClipboard] = useState<boolean>(false);
 
@@ -138,6 +240,13 @@ const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      addComment();
+      text.resetValue();
+    }
+  };
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     setOnClickClipboard(true);
@@ -151,6 +260,7 @@ const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
       title={'Музыкальная платформа - ' + track.name + ' - ' + track.artist}
       keywords={'хит, слушать, ' + track.name + ' ' + track.artist}
     >
+      {/* Header */}
       <SArticleWrapper>
         <SArticle>
           <SContent>
@@ -179,14 +289,47 @@ const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
         </SArticle>
       </SArticleWrapper>
 
-      {/* <div>
-        {track.comments.map((comments: any) => (
-          <div>
-            <div>Автор - {comments.username}</div>
-            <div>Комментарий - {comments.text}</div>
-          </div>
-        ))}
-      </div> */}
+      {/* Lirics */}
+      <SLyrickWrapper>
+        <SLyrickH2>Слова</SLyrickH2>
+        <SLirick>{track.text}</SLirick>
+      </SLyrickWrapper>
+
+      {/* Comments */}
+      <SCommentsWrapper>
+        <SCountComments>
+          {track.comments.length}
+          <span>комментариев</span>
+        </SCountComments>
+        <SMyComment>
+          <Avatar />
+          <STextFieldWrapper>
+            <STextField
+              {...text}
+              type="text"
+              placeholder="Напишите комментарий"
+              onKeyPress={handleKeyDown}
+            />
+          </STextFieldWrapper>
+        </SMyComment>
+        {track.comments.length === 0 ? (
+          <SCommentsWrapper>
+            <SNoComments>
+              Здесь пока нет комментариев. Оставьте его первым!
+            </SNoComments>
+          </SCommentsWrapper>
+        ) : (
+          track.comments.map((comment) => (
+            <SCommentItem key={comment._id}>
+              <Avatar />
+              <SCommentContent>
+                <SCommentAuthor>{comment.username}</SCommentAuthor>
+                <SCommentBody>{comment.text}</SCommentBody>
+              </SCommentContent>
+            </SCommentItem>
+          ))
+        )}
+      </SCommentsWrapper>
     </MainLayout>
   );
 };
