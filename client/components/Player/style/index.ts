@@ -11,7 +11,7 @@ export const Container = styled.div`
   margin: 0 auto;
   bottom: 0;
   padding: 0 10px;
-  z-index: 101;
+  z-index: 99;
   transition: transform 0.25s ease;
 `;
 
@@ -81,6 +81,10 @@ export const TextWrapper = styled.div`
   @media (max-width: 768px) {
     flex: 1 1 auto;
   }
+
+  @media (max-width: 425px) {
+    margin-right: 0px;
+  }
 `;
 
 export const Controls = styled.div`
@@ -97,10 +101,6 @@ export const Controls = styled.div`
     & > button {
       margin: 0 8px;
     }
-  }
-
-  @media (max-width: 450px) {
-    justify-content: flex-end;
   }
 `;
 
@@ -158,7 +158,7 @@ export const Album = styled.div`
     flex: 0 0 185px;
   }
 
-  @media (max-width: 450px) {
-    flex: 0 0 120px;
+  @media (max-width: 425px) {
+    display: none;
   }
 `;

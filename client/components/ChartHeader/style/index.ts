@@ -7,6 +7,10 @@ export const SContainer = styled.div`
   padding: 200px 20px 175px;
   overflow: hidden;
   background-color: ${({ theme }) => theme.main};
+
+  @media (max-width: 768px) {
+    padding: 130px 20px 95px;
+  }
 `;
 
 export const SContainerTops = styled.div`
@@ -36,7 +40,11 @@ export const SPlayButton = styled.button`
 `;
 
 export const SWrapper = styled.div`
-  //
+  width: 33%;
+
+  @media (max-width: 425px) {
+    width: auto;
+  }
 `;
 
 export const SH1 = styled.div`
@@ -64,6 +72,11 @@ export const SAlbum = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 export const STops = styled.div`
@@ -85,6 +98,27 @@ export const STops = styled.div`
   ${SAlbum}:nth-child(3) {
     top: 210px;
     right: 0;
+  }
+
+  @media (max-width: 768px) {
+    ${SAlbum}:nth-child(1) {
+      top: 210px;
+      right: 210px;
+    }
+
+    ${SAlbum}:nth-child(2) {
+      top: 320px;
+      right: 210px;
+    }
+
+    ${SAlbum}:nth-child(3) {
+      top: 320px;
+      right: 100px;
+    }
+  }
+
+  @media (max-width: 425px) {
+    display: none;
   }
 `;
 

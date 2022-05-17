@@ -45,6 +45,10 @@ export const SButton = styled.button`
   ${STrack}:hover & {
     opacity: 1;
   }
+
+  @media (max-width: 425px) {
+    opacity: 1;
+  }
 `;
 
 export const SPLay = styled.div`
@@ -79,6 +83,8 @@ export const SMore = styled.div`
 export const SText = styled.div`
   align-self: baseline;
   margin-left: 25px;
+  width: 25vw;
+  flex: 1;
 `;
 
 export const SName = styled.a`
@@ -125,6 +131,10 @@ export const SLike = styled.div`
   & > svg {
     font-size: 18px;
   }
+
+  @media (max-width: 425px) {
+    display: none;
+  }
 `;
 
 export const SLikeCount = styled.span`
@@ -141,6 +151,10 @@ export const STime = styled.div`
   line-height: 40px;
   font-weight: 500;
   letter-spacing: 0.44px;
+
+  @media (max-width: 325px) {
+    display: none;
+  }
 `;
 
 export const SMenu = styled.div`

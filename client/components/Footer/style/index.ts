@@ -3,6 +3,10 @@ import styled from 'styled-components';
 export const SFooter = styled.footer`
   padding: 30px 60px 90px;
   background-color: ${({ theme }) => theme.main};
+
+  @media (max-width: 425px) {
+    padding: 30px 10px 90px;
+  }
 `;
 
 export const SMain = styled.div`
@@ -14,6 +18,15 @@ export const SMain = styled.div`
   & > ul:not(:last-child) {
     margin-right: 10px;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    & > ul:not(:last-child) {
+      margin-right: 0px;
+    }
+  }
 `;
 
 export const SSlogan = styled.h2`
@@ -23,10 +36,20 @@ export const SSlogan = styled.h2`
   flex: 1 0 40%;
   margin-right: 30px;
   color: ${({ theme }) => theme.white};
+
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+    text-align: center;
+    margin-right: 0px;
+  }
 `;
 
 export const SLinks = styled.ul`
   flex: 1 1 30%;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 export const SLink = styled.li`

@@ -13,6 +13,10 @@ export const Header = styled.header`
   height: 60px;
   box-shadow: -6px -6px 19px 0px #000000a6;
   z-index: 100;
+
+  @media (max-width: 425px) {
+    width: 100vw;
+  }
 `;
 
 export const LogoWrapper = styled.div`
@@ -36,12 +40,25 @@ export const Logo = styled.div`
   font-weight: 500;
   user-select: none;
   cursor: pointer;
+
+  @media (max-width: 425px) {
+    display: none;
+  }
 `;
 
 export const SearchWrapper = styled.div`
   display: flex;
   width: 55%;
   height: 35px;
+
+  @media (max-width: 768px) {
+    width: auto;
+    margin: 0 15px;
+  }
+
+  @media (max-width: 325px) {
+    display: none;
+  }
 `;
 
 export const SearchField = styled.input`

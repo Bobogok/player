@@ -24,11 +24,14 @@ export const STrack = styled.li`
 
 export const SSidebar = styled.div`
   position: relative;
-  // flex: 1 0 350px;
-  min-width: fit-content;
+  flex: 1 1 450px;
   max-width: 40%;
   padding-right: 15px;
   margin-left: 50px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const STeaserWrapper = styled.div`
