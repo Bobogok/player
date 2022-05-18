@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const SChart = styled.main`
-  // margin: 30px 10px;
   margin: 30px auto;
   justify-content: center;
   max-width: 1366px;
   display: flex;
+  width: 100%;
 `;
 
 export const SContainer = styled.div`

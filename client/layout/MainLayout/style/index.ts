@@ -5,7 +5,8 @@ export const SWrapper = styled.div`
 `;
 
 export const SContainer = styled.div`
-  // max-width: 1366px;
   margin: 0 auto;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;

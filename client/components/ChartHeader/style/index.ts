@@ -47,7 +47,7 @@ export const SWrapper = styled.div`
   }
 `;
 
-export const SH1 = styled.div`
+export const SH1 = styled.h1`
   font-size: 40px;
   letter-spacing: 0.78px;
   margin-bottom: 10px;
@@ -55,7 +55,7 @@ export const SH1 = styled.div`
   color: ${({ theme }) => theme.white};
 `;
 
-export const SH2 = styled.div`
+export const SH2 = styled.h2`
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.5px;
