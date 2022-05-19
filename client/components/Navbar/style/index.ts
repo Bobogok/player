@@ -117,3 +117,20 @@ export const Avatar = styled.div`
   background-size: cover;
   background-image: url(https://avatars.mds.yandex.net/get-yapic/41409/rtL8xTFQQiWjrBHkgaNz1b0CLs-1/islands-retina-middle);
 `;
+
+export const SSignIn = styled.button`
+  padding: 2px 15px 2px;
+  border: 2px solid ${({ theme }) => theme.white};
+  border-radius: 35px;
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.main};
+  font-size: 16px;
+  height: 35px;
+  font-weight: 600;
+  box-shadow: 0px 5px 18px -5px rgba(34, 60, 80, 0.6);
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0px 0px 18px -5px rgba(34, 60, 80, 0.6);
+  }
+`;

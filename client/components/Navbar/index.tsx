@@ -13,6 +13,7 @@ import {
   SearchField,
   SearchIcon,
   SearchWrapper,
+  SSignIn,
 } from './style';
 import { useState } from 'react';
 import Sidebar from '../Sidebar';
@@ -71,13 +72,14 @@ const Navbar = () => {
 
       {/* Profile */}
       <ProfileWrapper>
-        <ProfileIcon onClick={() => router.push('/tracks/create')}>
+        {/* <ProfileIcon onClick={() => router.push('/tracks/create')}>
           <FileUpload />
-        </ProfileIcon>
-        <ProfileIcon>
+        </ProfileIcon> */}
+        {/* <ProfileIcon>
           <Notifications />
-        </ProfileIcon>
-        <Avatar />
+        </ProfileIcon> */}
+        <SSignIn onClick={() => router.push('/auth')}>Войти</SSignIn>
+        {/* <Avatar /> */}
       </ProfileWrapper>
     </Header>
   );

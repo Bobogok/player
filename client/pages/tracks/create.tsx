@@ -28,7 +28,7 @@ const Create = () => {
       formData.append('audio', audio!);
       axios
         .post('http://localhost:5000/tracks', formData)
-        .then((res) => router.push('/tracks'))
+        .then((res) => router.push('/'))
         .catch((e) => console.log(e));
     }
   };
