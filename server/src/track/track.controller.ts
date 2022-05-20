@@ -1,3 +1,4 @@
+import { JwtGuard } from './../auth/guards/jwt.guard';
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {
   Body,
@@ -8,6 +9,7 @@ import {
   Post,
   Query,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -53,6 +55,7 @@ export class TrackController {
     return this.trackService.delete(id);
   }
 
+  @UseGuards(JwtGuard)
   @Post('/comment')
   addComment(@Body() dto: CreateCommentDto) {
     return this.trackService.addComment(dto);

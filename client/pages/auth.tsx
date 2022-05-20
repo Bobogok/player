@@ -1,3 +1,5 @@
+import axios from 'axios';
+import router from 'next/router';
 import React, { useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useInput } from '../hooks/useInput';
@@ -133,13 +135,23 @@ const Auth = () => {
   const password = useInput('');
 
   const nextStep = () => {
-    if (activeStep !== 2) {
+    if (activeStep !== 1) {
       setActiveStep((prev) => prev + 1);
-      console.log('Данные ушли');
     } else {
-      const formData = new FormData();
-      formData.append('login', login.value);
-      formData.append('password', password.value);
+      const json = JSON.stringify({
+        email: login.value,
+        password: password.value,
+      });
+      axios
+        .post('http://localhost:5000/auth/login', json, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // responseType: 'text',
+        })
+        .then((res) => console.log(res))
+        .then((res) => router.push('/'))
+        .catch((e) => console.log(e));
     }
   };
 

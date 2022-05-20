@@ -1,7 +1,8 @@
 import { UserDetails } from './../user/user-details.interface';
 import { AuthService } from './auth.service';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { NewUserDTO } from 'src/user/dto/new-user.dto';
+import { ExistingUserDTO } from 'src/user/dto/existing-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -10,5 +11,11 @@ export class AuthController {
   @Post('register')
   register(@Body() user: NewUserDTO): Promise<UserDetails | null> {
     return this.authService.register(user);
+  }
+
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  login(@Body() user: ExistingUserDTO): Promise<{ token: string } | null> {
+    return this.authService.login(user);
   }
 }
