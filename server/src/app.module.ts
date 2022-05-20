@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { FileModule } from './file/file.module';
 import { TrackModule } from './track/track.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
 
 @Module({
@@ -15,6 +17,8 @@ import * as path from 'path';
     ),
     TrackModule,
     FileModule,
+    UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
