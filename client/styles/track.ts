@@ -158,6 +158,7 @@ export const SCountComments = styled.div`
 export const STextFieldWrapper = styled.div`
   width: 100%;
   border-bottom: 2px solid ${({ theme }) => theme.main};
+  margin-left: 10px;
 `;
 
 export const SNoComments = styled.div`
@@ -199,6 +200,7 @@ export const SCommentContent = styled.div`
   flex: 1 0 auto;
   font-size: 12px;
   line-height: 15px;
+  margin-left: 10px;
 `;
 
 export const SCommentAuthor = styled.div`

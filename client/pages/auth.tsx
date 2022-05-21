@@ -128,6 +128,15 @@ const SForgot = styled.a`
   user-select: none;
 `;
 
+function setCookie(name: string, value: any) {
+  let expires = '';
+  const date = new Date();
+  date.setTime(date.getTime() + 900000);
+  expires = '; expires=' + date.toUTCString();
+  document.cookie =
+    name + '=' + (value ? 'Bearer ' + value : '') + expires + '; path=/';
+}
+
 const Auth = () => {
   const [capture, setCapture] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState(0);
@@ -148,7 +157,17 @@ const Auth = () => {
             'Content-Type': 'application/json',
           },
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          localStorage.setItem('nickname', res.data.nickname);
+          localStorage.setItem(
+            'passport',
+            (({ token, nickname, ...obj }) => JSON.stringify(obj))(res.data),
+          );
+          console.log(res.data.token);
+          console.log(res.data.token);
+
+          setCookie('jwtToken', res.data.token);
+        })
         .then((res) => router.push('/'))
         .catch((e) => console.log(e));
     }

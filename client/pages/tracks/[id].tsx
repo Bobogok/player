@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Headphones from '@mui/icons-material/Headphones';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import { useInput } from '../../hooks/useInput';
@@ -32,21 +32,50 @@ import {
   SCommentBody,
 } from '../../styles/track';
 
+function getCookie(name: string) {
+  const nameEQ = name + '=';
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+function eraseCookie(name: string) {
+  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 const TrackPage = ({ serverTrack }: { serverTrack: ITrack }) => {
   const [track, setTrack] = useState<ITrack>(serverTrack);
   const router = useRouter();
-  const username = useInput('NONAME'); // Моковый юзернейм
   const text = useInput('');
   const [onClickClipboard, setOnClickClipboard] = useState<boolean>(false);
+  const [nickname, setNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    setNickname(localStorage.getItem('nickname'));
+  }, []);
 
   const addComment = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/tracks/comment', {
-        username: username.value,
-        text: text.value,
-        trackId: track._id,
-      });
-      setTrack({ ...track, comments: [...track.comments, res.data] });
+      if (nickname) {
+        const res = await axios.post(
+          'http://localhost:5000/tracks/comment',
+          {
+            username: nickname,
+            text: text.value,
+            trackId: track._id,
+          },
+          {
+            headers: {
+              Authorization: getCookie('jwtToken')!,
+            },
+          },
+        );
+        setTrack({ ...track, comments: [...track.comments, res.data] });
+      }
     } catch (e) {
       console.log(e);
     }
