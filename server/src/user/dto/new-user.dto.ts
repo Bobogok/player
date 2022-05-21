@@ -1,5 +1,10 @@
 export class NewUserDTO {
-  name: string;
+  firstName: string;
+  secondName: string;
+  nickname: string;
+  sex: string;
   email: string;
   password: string;
+  dateOfBirth?: string;
+  phone?: string;
 }

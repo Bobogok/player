@@ -6,6 +6,7 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { NewUserDTO } from 'src/user/dto/new-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { setMaxListeners } from 'process';
 
 @Injectable()
 export class AuthService {
@@ -19,15 +20,47 @@ export class AuthService {
   }
 
   async register(user: Readonly<NewUserDTO>): Promise<UserDetails | any> {
-    const { name, email, password } = user;
-    console.log(name, email, password);
+    const {
+      firstName,
+      secondName,
+      nickname,
+      email,
+      dateOfBirth,
+      sex,
+      phone,
+      password,
+    } = user;
 
-    const existingUser = await this.userService.findByEmail(email);
+    console.log(
+      firstName,
+      secondName,
+      nickname,
+      email,
+      dateOfBirth,
+      sex,
+      phone,
+      password,
+    );
 
-    if (existingUser) return 'Email taken!';
+    const existingEmail = await this.userService.findByEmail(email);
+    const existingNickname = await this.userService.findByNickname(nickname);
+    const existingPhone = phone && (await this.userService.findByPhone(phone));
+
+    if (existingEmail) return 'Email taken!';
+    if (existingNickname) return 'Nickname taken!';
+    if (existingPhone) return 'Phone number taken!';
 
     const hashedPassword = await this.hashPassword(password);
-    const newUser = await this.userService.create(name, email, hashedPassword);
+    const newUser = await this.userService.create(
+      firstName,
+      secondName,
+      nickname,
+      email,
+      hashedPassword,
+      sex,
+      dateOfBirth,
+      phone,
+    );
 
     return this.userService._getUserDetails(newUser);
   }
@@ -60,14 +93,24 @@ export class AuthService {
 
   async login(
     existingUser: ExistingUserDTO,
-  ): Promise<{ token: string } | null> {
+  ): Promise<Omit<UserDetails, string> | null> {
     const { email, password } = existingUser;
     const user = await this.validateUser(email, password);
 
     if (!user) return null;
 
+    const { firstName, secondName, nickname, dateOfBirth, phone, sex } = user;
+
     const jwt = await this.jwtService.signAsync({ user });
 
-    return { token: jwt };
+    return {
+      token: jwt,
+      firstName: firstName,
+      secondName: secondName,
+      nickname: nickname,
+      dateOfBirth: dateOfBirth,
+      phone: phone,
+      sex: sex,
+    };
   }
 }

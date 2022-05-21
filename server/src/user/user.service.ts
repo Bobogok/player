@@ -13,13 +13,26 @@ export class UserService {
   _getUserDetails(user: UserDocument): UserDetails {
     return {
       id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      secondName: user.secondName,
+      nickname: user.nickname,
       email: user.email,
+      sex: user.sex,
+      dateOfBirth: user.dateOfBirth,
+      phone: user.phone,
     };
   }
 
   async findByEmail(email: string): Promise<UserDocument | null> {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  async findByNickname(nickname: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ nickname }).exec();
+  }
+
+  async findByPhone(phone: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ phone }).exec();
   }
 
   async findById(id: string): Promise<UserDetails | null> {
@@ -30,14 +43,24 @@ export class UserService {
   }
 
   async create(
-    name: string,
+    firstName: string,
+    secondName: string,
+    nickname: string,
     email: string,
     hashedPassword: string,
+    sex?: string,
+    dateOfBirth?: string,
+    phone?: string,
   ): Promise<UserDocument> {
     const newUser = new this.userModel({
-      name,
-      email,
+      firstName: firstName,
+      secondName: secondName,
+      nickname: nickname,
+      email: email,
       password: hashedPassword,
+      sex: sex,
+      dateOfBirth: dateOfBirth,
+      phone: phone,
     });
 
     return newUser.save();

@@ -147,7 +147,6 @@ const Auth = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          // responseType: 'text',
         })
         .then((res) => console.log(res))
         .then((res) => router.push('/'))
@@ -186,12 +185,8 @@ const Auth = () => {
                 />
               </>
             )}
-            {activeStep === 2 && (
-              // todo изменить
-              <div style={{ width: 307, height: 65 + 24 }}>...loading</div>
-            )}
           </SInputWrapper>
-          {activeStep !== 2 && (
+          {activeStep === 1 && (
             <SForgotWrapper>
               <SForgot>Не помню</SForgot>
             </SForgotWrapper>

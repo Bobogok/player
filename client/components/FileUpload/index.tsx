@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { FileUploadProps } from './props/FileUploadProps';
 
-// @ts-ignore
 const FileUpload: React.FC<FileUploadProps> = ({
   setFile,
   accept,
